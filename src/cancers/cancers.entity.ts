@@ -3,13 +3,13 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToOne, CreateDateColumn, Upd
 
 @Entity()
 export class Cancers {
-    @PrimaryGeneratedColumn('uuid')
-    cancerId: string;
+    @PrimaryGeneratedColumn()
+    cancerId: number;
 
     @Column()
     cancerName: string;
 
-    @Column({nullable: true, enum: ['active', 'inactive'] })
+    @Column({nullable: true, enum: ['active', 'inactive'], default: 'active' })
     status: string;
 
     // Timestamp fields

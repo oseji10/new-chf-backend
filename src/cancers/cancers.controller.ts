@@ -12,7 +12,7 @@ export class CancersController {
   }
 
   @Get(':cancerId')
-  findOne(@Param('cancerId') cancerId: string) {
+  findOne(@Param('cancerId') cancerId: number) {
     return this.cancersService.findOne(cancerId);
   }
 
@@ -22,7 +22,7 @@ export class CancersController {
   }
 
   @Put(':cancerId')
-  update(@Param('cancerId') cancerId: string, @Body() cancers: Cancers) {
+  update(@Param('cancerId') cancerId: number, @Body() cancers: Cancers) {
     return this.cancersService.update(cancerId, cancers);
   }
 

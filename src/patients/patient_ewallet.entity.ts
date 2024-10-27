@@ -11,10 +11,10 @@ export class PatientEwallet {
   @JoinColumn()
   chfId: Patients;
 
-  @Column({ unique: true,  type: 'decimal' })
+  @Column({ nullable: true,  type: 'decimal' })
   credit: number;
 
-  @Column({ unique: true,  type: 'decimal' })
+  @Column({ nullable: true,  type: 'decimal' })
   debit: number;
 
 

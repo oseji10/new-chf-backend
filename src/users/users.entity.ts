@@ -1,4 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
+// src/users/users.entity.ts
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToMany, JoinTable } from 'typeorm';
+import { Roles } from './roles.entity';
 
 @Entity()
 export class Users {
@@ -16,14 +18,22 @@ export class Users {
 
   @Column({ length: 11, nullable: true, unique: true })
   phoneNumber: string;
+
+  @ManyToMany(() => Roles, (roles) => roles.users)
+  @JoinTable({
+    name: 'user_roles',  // join table name
+    joinColumn: { name: 'userId', referencedColumnName: 'userId' },
+    inverseJoinColumn: { name: 'roleId', referencedColumnName: 'roleId' },
+  })
+  roles: Roles[];
   
-   // Timestamp fields
-   @CreateDateColumn({ type: 'timestamptz' })
-   createdAt: Date;
+  // Timestamp fields
+  @CreateDateColumn({ type: 'timestamptz' })
+  createdAt: Date;
   
-   @UpdateDateColumn({ type: 'timestamptz' })
-   updatedAt: Date;
+  @UpdateDateColumn({ type: 'timestamptz' })
+  updatedAt: Date;
   
-   @DeleteDateColumn({ type: 'timestamptz', nullable: true })
-   deletedAt?: Date;
+  @DeleteDateColumn({ type: 'timestamptz', nullable: true })
+  deletedAt?: Date;
 }

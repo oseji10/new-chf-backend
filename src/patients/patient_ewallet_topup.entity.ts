@@ -11,13 +11,13 @@ export class PatientEwalletTopupRequest {
   @JoinColumn()
   chfId: Patients;
 
-  @Column({ unique: true,  type: 'decimal' })
+  @Column({ nullable: true,  type: 'decimal' })
   amountRequested: number;
 
-  @Column({ unique: true,  type: 'decimal' })
+  @Column({ nullable: true,  type: 'decimal' })
   amountCredited: number;
 
-  @Column({ unique: true,  type: 'decimal' })
+  @Column({ nullable: true,  type: 'decimal' })
   debit: number;
 
 
@@ -29,11 +29,11 @@ export class PatientEwalletTopupRequest {
   @JoinColumn()
   approvedBy: Users;
 
-  @Column({ unique: true})
+  @Column({ nullable: true})
   requesterComment: string;
 
 
-  @Column({ unique: true})
+  @Column({ nullable: true})
   approverComment: string;
 
   @ManyToOne(() => Users, (users) => users.userId, { nullable: true })

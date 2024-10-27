@@ -14,6 +14,8 @@ import { HospitalEwallet } from './hospitals/hospital_ewallet.entity';
 import { HospitalsModule } from './hospitals/hospitals.module';
 import { CancersModule } from './cancers/cancers.module';
 import { StatesModule } from './states/states.module';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from './auth/roles.guards';
 
 dotenv.config();
 
@@ -43,6 +45,11 @@ dotenv.config();
     
   ],
   controllers: [AppController],
-  providers: [AppService, JwtStrategy],
+  providers: [AppService, JwtStrategy,
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+  ],
 })
 export class AppModule {}

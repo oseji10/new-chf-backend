@@ -7,42 +7,46 @@ export class PatientPersonalHistory {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToOne(() => Patients, (patients) => patients.chfId)
+  // @OneToOne(() => Patients, (patients) => patients.chfId)
+  // @JoinColumn()
+  // chfId: Patients;
+
+  @OneToOne(() => Users, (users) => users.userId, { nullable: true })
   @JoinColumn()
-  chfId: Patients;
+  user: Users;
 
   @Column({ unique: true,  type: 'decimal' })
   averageMonthlyIncome: number;
 
-  @Column({ unique: true })
+  @Column({ nullable: true })
   averageFeedingDaily: number;
 
-  @Column({ unique: true })
+  @Column({ nullable: true })
   whoProvidesFeeding: string;
 
-  @Column({ unique: true })
+  @Column({ nullable: true })
   accomodation: string;
 
-  @Column({ unique: true })
+  @Column({ nullable: true })
   accomodationType: string;
 
-  @Column({ unique: true })
+  @Column({ nullable: true })
   numberOfGoodSetOfClothes: number;
 
-  @Column({ unique: true })
+  @Column({ nullable: true })
   howAreClothesGotten: string;
 
  
-  @Column({ unique: true })
-  hospitalReceivingCare: number;
+  @Column({ nullable: true })
+  hospitalReceivingCare: string;
   
-  @Column({ unique: true })
+  @Column({ nullable: true })
   whyDidYouChooseHospital: string;
 
-  @Column({ unique: true })
+  @Column({ nullable: true })
   levelOfSpousalSupport: string;
 
-  @Column({ unique: true })
+  @Column({ nullable: true })
   otherSupport: string;
 
  

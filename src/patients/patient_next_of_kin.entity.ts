@@ -7,20 +7,20 @@ export class PatientNextOfKin {
   @PrimaryGeneratedColumn()
   nokId: number;
 
-  @OneToOne(() => Patients, (patients) => patients.chfId)
+  @OneToOne(() => Users, (users) => users.userId, { nullable: true })
   @JoinColumn()
-  chfId: Patients;
+  user: Users;
 
-  @Column({ unique: true })
+  @Column({ nullable: true })
   nextOfKinName: string;
 
-  @Column({ unique: true })
+  @Column({ nullable: true })
   nextOfKinPhoneNumber: string;
 
-  @Column({ unique: true })
+  @Column({ nullable: true })
   nextOfKinAlternatePhoneNumber: string;
 
-  @Column({ unique: true })
+  @Column({ nullable: true })
   relationship: string;
 
   @ManyToOne(() => Users, (users) => users.userId, { nullable: true })

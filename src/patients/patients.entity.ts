@@ -1,8 +1,9 @@
 import { States } from '../states/states.entity';
 import { Users } from '../users/users.entity';
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne } from 'typeorm';
 import { PatientNextOfKin } from './patient_next_of_kin.entity';
 import { Cancers } from '../cancers/cancers.entity';
+import { Hospitals } from 'src/hospitals/hospitals.entity';
 
 @Entity()
 export class Patients {
@@ -27,6 +28,9 @@ export class Patients {
   @OneToOne(() => Users, (users) => users.userId)
   @JoinColumn()
   user: Users;
+
+  @Column({nullable: true})
+  userId: number;
 
   @Column({nullable: true,})
   gender: string;
@@ -64,9 +68,9 @@ export class Patients {
   @JoinColumn()
   stateOfResidence: States;
 
-  @OneToOne(() => PatientNextOfKin, (patient_next_of_kin) => patient_next_of_kin.nokId)
+  @OneToOne(() => PatientNextOfKin, (patient_next_of_kin) => patient_next_of_kin.nokId, { nullable: true })
   @JoinColumn()
-  nextOfKin: States;
+  nextOfKin: PatientNextOfKin;
   
   
   @Column({nullable: true, enum: ['registering', 'registered', 'primary_physican_reviewed', 'social_welfare_reviewed', 'cmd_reviewed', 'secretariat_reviewed', 'receiving_care'], default: 'registering'})
@@ -88,4 +92,9 @@ export class Patients {
     
      @DeleteDateColumn({ type: 'timestamptz', nullable: true })
      deletedAt?: Date;
+
+
+     @ManyToOne(() => Hospitals, (hospitals) => hospitals.hospitalId, { nullable: true })
+  @JoinColumn()
+  hospital: Hospitals;
 }

@@ -10,6 +10,9 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne,
 export class Regions {
   @PrimaryGeneratedColumn()
     regionId: number;
+
+    @Column({nullable: true})
+    shortName: string;
   
     @Column({nullable: true})
     regionName: string;

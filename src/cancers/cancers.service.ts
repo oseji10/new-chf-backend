@@ -14,7 +14,7 @@ export class CancersService {
     return this.cancersRepository.find();
   }
 
-  findOne(cancerId: string): Promise<Cancers> {
+  findOne(cancerId: number): Promise<Cancers> {
     return this.cancersRepository.findOne({ where: { cancerId }});
   }
 
@@ -22,7 +22,7 @@ export class CancersService {
     return this.cancersRepository.save(cancers);
   }
 
-  async update(cancerId: string, cancers: Cancers): Promise<Cancers> {
+  async update(cancerId: number, cancers: Cancers): Promise<Cancers> {
     await this.cancersRepository.update(cancerId, cancers);
     return this.findOne(cancerId);
   }

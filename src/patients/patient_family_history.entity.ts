@@ -7,34 +7,34 @@ export class PatientFamilyHistory {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToOne(() => Patients, (patients) => patients.chfId)
+  @OneToOne(() => Users, (users) => users.userId)
   @JoinColumn()
-  chfId: Patients;
+  user: Users;
 
-  @Column({ unique: true })
+  @Column({ nullable: true })
   familySetup: string;
 
-  @Column({ unique: true })
+  @Column({ nullable: true })
   familiySize: number;
 
-  @Column({ unique: true })
+  @Column({ nullable: true })
   birthOrder: string;
 
-  @Column({ unique: true })
+  @Column({ nullable: true })
   fatherEducationalLevel: string;
 
-  @Column({ unique: true })
+  @Column({ nullable: true })
   motherEducationalLevel: string;
 
-  @Column({ unique: true })
+  @Column({ nullable: true })
   fatherOccupation: string;
 
-  @Column({ unique: true })
+  @Column({ nullable: true })
   motherOccupation: string;
 
  
-  @Column({ unique: true })
-  levelOfFamilyCare: number;
+  @Column({ nullable: true })
+  levelOfFamilyCare: string;
   
   @Column({ unique: true,  type: 'decimal' })
   familyMonthlyIncome: string;
