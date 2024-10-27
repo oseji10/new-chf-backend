@@ -9,6 +9,11 @@ import * as dotenv from 'dotenv';
 import { join } from 'path';
 import { AuthModule } from './auth/auth.module';
 import { JwtStrategy } from './auth/jwt.strategy';
+import { PatientsModule } from './patients/patients.module';
+import { HospitalEwallet } from './hospitals/hospital_ewallet.entity';
+import { HospitalsModule } from './hospitals/hospitals.module';
+import { CancersModule } from './cancers/cancers.module';
+import { StatesModule } from './states/states.module';
 
 dotenv.config();
 
@@ -30,7 +35,12 @@ dotenv.config();
       synchronize: true,
     }),
     UsersModule, 
-    AuthModule
+    AuthModule,
+    PatientsModule,
+    HospitalsModule,
+    CancersModule,
+    StatesModule
+    
   ],
   controllers: [AppController],
   providers: [AppService, JwtStrategy],

@@ -48,8 +48,8 @@ export class UsersService {
     return await this.usersRepository.findOne({ where: { email } });
   }
 
-  async findById(id: number): Promise<Users | undefined> {
+  async findById(userId: number): Promise<Users | undefined> {
     // Ensure we use findOne to get a single Users instance
-    return await this.usersRepository.findOne({ where: { id } });
+    return await this.usersRepository.findOne({ where: { userId } });
   }
 }

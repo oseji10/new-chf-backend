@@ -1,9 +1,9 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
 
 @Entity()
 export class Users {
   @PrimaryGeneratedColumn()
-  id: number;
+  userId: number;
 
   @Column({ unique: true })
   email: string;
@@ -17,5 +17,13 @@ export class Users {
   @Column({ length: 11, nullable: true, unique: true })
   phoneNumber: string;
   
-  // Add other fields as needed
+   // Timestamp fields
+   @CreateDateColumn({ type: 'timestamptz' })
+   createdAt: Date;
+  
+   @UpdateDateColumn({ type: 'timestamptz' })
+   updatedAt: Date;
+  
+   @DeleteDateColumn({ type: 'timestamptz', nullable: true })
+   deletedAt?: Date;
 }

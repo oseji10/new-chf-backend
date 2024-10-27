@@ -8,7 +8,7 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
   app.useGlobalFilters(new UnauthorizedExceptionFilter());
   app.enableCors({
-    origin: 'http://localhost:3001', // Replace with your frontend domain
+    origin: 'http://localhost:3000', // Replace with your frontend domain
     credentials: true, // Allow credentials (cookies) to be sent
   });
   await app.listen(3007);
