@@ -43,10 +43,12 @@ export class UsersService {
 //     return this.usersRepository.save(newUser);  // Save the new user to the database
 //   }
   
-  async findByEmail(email: string): Promise<Users | undefined> {
-    // Ensure we use findOne to get a single Users instance
-    return await this.usersRepository.findOne({ where: { email } });
-  }
+async findByEmail(email: string): Promise<Users | undefined> {
+  const user = await this.usersRepository.findOne({ where: { email } });
+  console.log("User fetched by email:", user); // Log the user found or undefined
+  return user;
+}
+
 
   async findById(userId: number): Promise<Users | undefined> {
     // Ensure we use findOne to get a single Users instance

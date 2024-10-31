@@ -3,12 +3,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Hospitals } from './hospitals.entity';
 import * as bcrypt from 'bcrypt';
+import { Doctors } from '../doctors/doctors.entity';
 
 @Injectable()
 export class HospitalsService {
   constructor(
     @InjectRepository(Hospitals)
     private readonly hospitalsRepository: Repository<Hospitals>,
+    @InjectRepository(Doctors)
+    private doctorsRepository: Repository<Doctors>,
   ) {}
 
 
@@ -16,6 +19,14 @@ export class HospitalsService {
     findAll(): Promise<Hospitals[]> {
         return this.hospitalsRepository.find();
       }
+
+      async findDoctorsByHospital(hospitalId: number) {
+        return this.doctorsRepository.find({
+          where: { hospital: { hospitalId: hospitalId } },
+          relations: ['hospital'], // Optional: include hospital details if needed
+        });
+      }
+      
 
   async create(userData: Partial<Hospitals>): Promise<Hospitals> {
     const newUser = this.hospitalsRepository.create({
@@ -40,12 +51,12 @@ export class HospitalsService {
 //     return this.hospitalsRepository.save(newUser);  // Save the new user to the database
 //   }
   
-  async findByEmail(hospitalId: string): Promise<Hospitals | undefined> {
+  async findByEmail(hospitalId: number): Promise<Hospitals | undefined> {
     // Ensure we use findOne to get a single Hospitals instance
     return await this.hospitalsRepository.findOne({ where: { hospitalId } });
   }
 
-  async findById(hospitalId: string): Promise<Hospitals | undefined> {
+  async findById(hospitalId: number): Promise<Hospitals | undefined> {
     // Ensure we use findOne to get a single Hospitals instance
     return await this.hospitalsRepository.findOne({ where: { hospitalId } });
   }

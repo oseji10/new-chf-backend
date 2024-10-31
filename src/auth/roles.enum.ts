@@ -9,5 +9,6 @@ export enum Role {
     NICRAT_HEAD = 'nicrat_head',
     NICRAT_DFA = 'nicrat_dfa',
     NICRAT_DHS = 'nicrat_dhs',
-    OTHER_STAFF = 'other_staff'
+    OTHER_STAFF = 'other_staff',
+    ADMIN='admin'
   }

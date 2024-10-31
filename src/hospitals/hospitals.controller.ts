@@ -12,10 +12,15 @@ export class HospitalsController {
   constructor(private readonly hospitalsService: HospitalsService) {}
   
   @Get()
-  @UseGuards(JwtAuthGuard) 
+  // @UseGuards(JwtAuthGuard) 
   @UseFilters(UnauthorizedExceptionFilter) 
   findAll() {
     return this.hospitalsService.findAll();
+  }
+
+  @Get(':hospitalId/doctors')
+  async findDoctorsByHospital(@Param('hospitalId') hospitalId: number) {
+    return this.hospitalsService.findDoctorsByHospital(hospitalId);
   }
 
 //   @Get(':id')

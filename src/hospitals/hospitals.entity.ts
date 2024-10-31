@@ -1,11 +1,12 @@
-import { States } from 'src/states/states.entity';
+import { Doctors } from '../doctors/doctors.entity';
+import { States } from '../states/states.entity';
 import { Users } from '../users/users.entity';
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne, OneToMany } from 'typeorm';
 
 @Entity()
 export class Hospitals {
   @PrimaryGeneratedColumn()
-  hospitalId: string;
+  hospitalId: number;
 
   @Column({ nullable: true })
   hospitalName: string;
@@ -28,17 +29,17 @@ export class Hospitals {
   @Column({ nullable: true })
   sortCode: string;
 
-  @OneToOne(() => Users, (users) => users.userId)
-  @JoinColumn()
-  cmd: Users;
+  // @OneToOne(() => Users, (users) => users.userId)
+  // @JoinColumn()
+  // cmd: Users;
 
   @ManyToOne(() => States, (states) => states.stateId, { nullable: true })
   @JoinColumn()
   state: States;
 
-  @OneToOne(() => Users, (users) => users.userId)
-  @JoinColumn()
-  hospitalAdmin: Users;
+  // @OneToOne(() => Users, (users) => users.userId)
+  // @JoinColumn()
+  // hospitalAdmin: Users;
   
    // Timestamp fields
    @CreateDateColumn({ type: 'timestamptz' })
@@ -49,4 +50,7 @@ export class Hospitals {
   
    @DeleteDateColumn({ type: 'timestamptz', nullable: true })
    deletedAt?: Date;
+
+   @OneToMany(() => Doctors, (doctor) => doctor.hospital)
+   doctors: Doctors[];
 }

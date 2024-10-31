@@ -7,7 +7,7 @@ export class PatientEwalletTopupRequest {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToOne(() => Patients, (patients) => patients.chfId)
+  @OneToOne(() => Patients, (patients) => patients.nchfId)
   @JoinColumn()
   chfId: Patients;
 

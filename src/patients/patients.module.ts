@@ -8,9 +8,10 @@ import { PatientEwalletTopupRequest } from './patient_ewallet_topup.entity';
 import { PatientNextOfKin } from './patient_next_of_kin.entity';
 import { PatientFamilyHistory } from './patient_family_history.entity';
 import { PatientPersonalHistory } from './patient_personal_history.entity';
+import { PatientCarePlan } from '../doctors/patient_care_plan.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Patients, PatientEwallet, PatientEwalletTopupRequest, PatientNextOfKin, PatientFamilyHistory, PatientPersonalHistory])],
+  imports: [TypeOrmModule.forFeature([Patients, PatientEwallet, PatientEwalletTopupRequest, PatientNextOfKin, PatientFamilyHistory, PatientPersonalHistory, PatientCarePlan])],
   providers: [PatientsService],
   controllers: [PatientsController],
   exports: [PatientsService], // Export PatientsService here

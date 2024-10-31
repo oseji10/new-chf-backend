@@ -16,8 +16,8 @@ import { JwtModule } from '@nestjs/jwt';
   imports: [
     UsersModule,
     JwtModule.register({
-      secret: '6ytrew21!2wsxzaQ1!AgrippaZ', // Replace with a secure key
-      signOptions: { expiresIn: '1h' }, // Set token expiration if desired
+      secret: process.env.JWT_SECRET || "6ytrew21!2wsxzaQ1!AgrippaZ", // Replace with a secure key
+      signOptions: { expiresIn: '24h' }, // Set token expiration if desired
     }),
     TypeOrmModule.forFeature([Users])],
   providers: [AuthService],

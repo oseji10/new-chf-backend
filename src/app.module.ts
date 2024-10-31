@@ -16,6 +16,8 @@ import { CancersModule } from './cancers/cancers.module';
 import { StatesModule } from './states/states.module';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './auth/roles.guards';
+import { Doctors } from './doctors/doctors.entity';
+import { DoctorsModule } from './doctors/doctors.module';
 
 dotenv.config();
 
@@ -35,13 +37,15 @@ dotenv.config();
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       migrations: [join(__dirname, 'migrations/*.ts')],
       synchronize: true,
+      logging: true,
     }),
     UsersModule, 
     AuthModule,
     PatientsModule,
     HospitalsModule,
     CancersModule,
-    StatesModule
+    StatesModule,
+    DoctorsModule
     
   ],
   controllers: [AppController],

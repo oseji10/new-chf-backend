@@ -15,7 +15,7 @@ export class PatientFamilyHistory {
   familySetup: string;
 
   @Column({ nullable: true })
-  familiySize: number;
+  familySize: number;
 
   @Column({ nullable: true })
   birthOrder: string;

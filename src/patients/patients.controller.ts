@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Delete, Put, UseGuards, UseFilters } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put, UseGuards, UseFilters, Req } from '@nestjs/common';
 import { PatientsService } from './patients.service';
 import { Patients } from './patients.entity';
 import { AuthGuard } from '@nestjs/passport';
@@ -11,6 +11,7 @@ import { PatientFamilyHistory } from './patient_family_history.entity';
 import { Roles } from '../auth/roles.decorator';
 import { Role } from '../auth/roles.enum';
 import { RolesGuard } from '../auth/roles.guards';
+import { PatientNextOfKin } from './patient_next_of_kin.entity';
 
 @Controller('patients')
 // @UseFilters(UnauthorizedExceptionFilter)
@@ -18,13 +19,20 @@ import { RolesGuard } from '../auth/roles.guards';
 export class PatientsController {
   constructor(private readonly patientsService: PatientsService) {}
   
-  @Get()
-  @UseGuards(JwtAuthGuard) 
+  // @Get()
+  // @UseGuards(JwtAuthGuard) 
+  // @UseFilters(UnauthorizedExceptionFilter) 
+  // findAll() {
+  //   return this.patientsService.findAll();
+  // }
+
+  @Get('applications')
+  @Roles(Role.DOCTOR, Role.ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @UseFilters(UnauthorizedExceptionFilter) 
   findAll() {
     return this.patientsService.findAll();
   }
-
   
   @Post('biodata')
   @UseGuards(JwtAuthGuard)
@@ -36,7 +44,17 @@ export class PatientsController {
       return this.patientsService.create(user.userId, patientData); // Pass userId as a number
   }
 
-  @Post('personal_history')
+  @Post('next-of-kin')
+  @UseGuards(JwtAuthGuard)
+  @UseFilters(UnauthorizedExceptionFilter)
+  async addNextOfKin(
+      @CurrentUser() user: Users, // Assuming `user` is of type `Users`
+      @Body() nextOfKinData: Partial<PatientNextOfKin>,
+  ): Promise<PatientNextOfKin> {
+      return this.patientsService.addNextOfKin(user.userId, nextOfKinData); // Pass userId as a number
+  }
+
+  @Post('personal-history')
   @UseGuards(JwtAuthGuard)
   @UseFilters(UnauthorizedExceptionFilter)
   async createPatientPersonalHisotry(
@@ -46,7 +64,7 @@ export class PatientsController {
       return this.patientsService.createPatientPersonalHistory(user.userId, personalHistoryData); // Pass userId and data
   }
 
-  @Post('family_history')
+  @Post('family-history')
   @UseGuards(JwtAuthGuard)
   @UseFilters(UnauthorizedExceptionFilter)
   async createPatientFamilyHistory(
@@ -57,7 +75,12 @@ export class PatientsController {
   }
   
 
-  
+  @UseGuards(JwtAuthGuard) 
+  @Get('profile-percentage')
+  async getProfilePercentage(@Req() req): Promise<string> {
+    const userId = req.user.userId; // Assuming req.user contains the logged-in user info
+    return this.patientsService.getProfilePercentageComplete(userId);
+  }
   
 
 //   @Put(':id')

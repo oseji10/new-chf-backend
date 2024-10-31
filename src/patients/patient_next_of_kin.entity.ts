@@ -7,9 +7,9 @@ export class PatientNextOfKin {
   @PrimaryGeneratedColumn()
   nokId: number;
 
-  @OneToOne(() => Users, (users) => users.userId, { nullable: true })
-  @JoinColumn()
-  user: Users;
+  // @OneToOne(() => Patients, (patients) => patients.nchfId, { nullable: true })
+  // @JoinColumn()
+  // patient: Users;
 
   @Column({ nullable: true })
   nextOfKinName: string;
@@ -23,9 +23,9 @@ export class PatientNextOfKin {
   @Column({ nullable: true })
   relationship: string;
 
-  @ManyToOne(() => Users, (users) => users.userId, { nullable: true })
+  @OneToOne(() => Users, (users) => users.userId, { nullable: true })
   @JoinColumn()
-  processedBy: Users;
+  user: Users;
 
 
      // Timestamp fields

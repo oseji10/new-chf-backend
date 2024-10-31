@@ -1,5 +1,5 @@
 // src/users/users.entity.ts
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToMany, JoinTable } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToMany, JoinTable, JoinColumn } from 'typeorm';
 import { Roles } from './roles.entity';
 
 @Entity()
@@ -13,13 +13,14 @@ export class Users {
   @Column()
   password: string;
 
-  @Column({ length: 11, nullable: true, unique: true })
+  @Column({ nullable: true, unique: true })
   username: string;
 
   @Column({ length: 11, nullable: true, unique: true })
   phoneNumber: string;
 
   @ManyToMany(() => Roles, (roles) => roles.users)
+  @JoinColumn()
   @JoinTable({
     name: 'user_roles',  // join table name
     joinColumn: { name: 'userId', referencedColumnName: 'userId' },

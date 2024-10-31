@@ -17,7 +17,7 @@ import { Regions } from './regions.entity';
 export class StatesController {
   constructor(private readonly statesService: StatesService) {}
 
-  @UseGuards(AuthGuard('session'))
+  // @UseGuards(AuthGuard('session'))
   @Get()
   findAll() {
     return this.statesService.findAll();
