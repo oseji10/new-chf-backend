@@ -4,39 +4,41 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToOne, CreateDateColumn, Upd
 // import { Patient } from '../patient/patient.entity';
 
 @Entity()
-export class PatientCarePlan {
+export class SocialWorkers {
     @PrimaryGeneratedColumn()
-    careId: number;
-
-    @ManyToOne(() => Users, (users) => users.userId, { nullable: true })
-    @JoinColumn({ name: 'doctorId' }) // Specify column name for clarity
-    doctorId: Users;
-
-    @ManyToOne(() => Users, (patients) => patients.userId, { nullable: true })
-    @JoinColumn({ name: 'patientId' }) // Specify column name for clarity
-    patient: Users;
+    socialworkerId: number;
 
     @Column()
-    careplan: string;
+    socialworkerName: string;
 
     @Column()
-    cost: string;
+    title: string;
 
-    @Column({ nullable: true, enum: ['active', 'inactive'], default: 'active' })
+    @Column()
+    department: string;
+
+    @Column({nullable: true, enum: ['active', 'inactive'], default: 'active' })
     status: string;
 
-    @Column({nullable: true})
-    isApproved: string;
+    // @ManyToOne(() => Hospitals, (hospitals) => hospitals.hospitalId, { nullable: true })
+    // @JoinColumn()
+    // hospital: Hospitals;
 
-    @Column({nullable: true})
-    comment: string;
+    @ManyToOne(() => Hospitals, (hospital) => hospital.hospitalId)
+    @JoinColumn()
+  hospital: Hospitals;
 
+    @OneToOne(() => Users, (users) => users.userId, { nullable: true })
+    @JoinColumn()
+    user: Users;
+
+    // Timestamp fields
     @CreateDateColumn({ type: 'timestamptz' })
     createdAt: Date;
-
+   
     @UpdateDateColumn({ type: 'timestamptz' })
     updatedAt: Date;
-
+   
     @DeleteDateColumn({ type: 'timestamptz', nullable: true })
     deletedAt?: Date;
 }

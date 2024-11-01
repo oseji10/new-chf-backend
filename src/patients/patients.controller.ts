@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Delete, Put, UseGuards, UseFilters, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put, UseGuards, UseFilters, Req, NotFoundException } from '@nestjs/common';
 import { PatientsService } from './patients.service';
 import { Patients } from './patients.entity';
 import { AuthGuard } from '@nestjs/passport';
@@ -12,6 +12,8 @@ import { Roles } from '../auth/roles.decorator';
 import { Role } from '../auth/roles.enum';
 import { RolesGuard } from '../auth/roles.guards';
 import { PatientNextOfKin } from './patient_next_of_kin.entity';
+import { SocialWorkerAssessment } from './social_worker_assessment.entity';
+import { SocialCondition } from './social_condition.entity';
 
 @Controller('patients')
 // @UseFilters(UnauthorizedExceptionFilter)
@@ -83,6 +85,49 @@ export class PatientsController {
   }
   
 
+
+  @Get('me')
+  @UseGuards(JwtAuthGuard)
+  async getPatientDetails(@Req() req): Promise<Patients> {
+    const userId = req.user?.userId;
+    console.log("User ID from session:", userId); // Debugging check
+  
+    if (!userId) {
+      throw new NotFoundException('User not authenticated');
+    }
+  
+    const patient = await this.patientsService.findPatientByLoggedUserId(userId);
+    if (!patient) {
+      throw new NotFoundException('Patient not found');
+    }
+  
+    return patient;
+  }
+  
+
+
+  @Post('social-worker-assessment')
+  @UseGuards(JwtAuthGuard)
+  @UseFilters(UnauthorizedExceptionFilter)
+  async createWorkerAssessment(
+    @CurrentUser() user: Users, // Assuming `user` is of type `Users`
+    @Body() workerAssessmentData: Partial<SocialWorkerAssessment>,
+  ): Promise<SocialWorkerAssessment> {
+      return this.patientsService.createWorkerAssessment(user.userId, workerAssessmentData); // Pass userId and data
+  }
+
+
+
+  @Post('social-condition')
+  @UseGuards(JwtAuthGuard)
+  @UseFilters(UnauthorizedExceptionFilter)
+  async createSocialCondition(
+    @CurrentUser() user: Users, // Assuming `user` is of type `Users`
+    @Body() socialConditionData: Partial<SocialCondition>,
+  ): Promise<SocialCondition> {
+      return this.patientsService.createSocialCondition(user.userId, socialConditionData); // Pass userId and data
+  }
+
 //   @Put(':id')
 //   update(@Param('id') id: string, @Body() patients: Patients) {
 //     return this.patientsService.update(id, patients);
@@ -92,4 +137,8 @@ export class PatientsController {
 //   remove(@Param('id') id: string) {
 //     return this.patientsService.remove(id);
 //   }
+
+
+
+
 }

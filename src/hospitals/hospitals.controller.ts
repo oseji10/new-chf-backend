@@ -23,6 +23,11 @@ export class HospitalsController {
     return this.hospitalsService.findDoctorsByHospital(hospitalId);
   }
 
+  @Get('state/:stateId')
+  async getHospitalsByState(@Param('stateId') stateId: number) {
+    return this.hospitalsService.findHospitalsByState(stateId);
+  }
+
 //   @Get(':id')
 //   findOne(@Param('id') id: string) {
 //     return this.hospitalsService.findOne(id);

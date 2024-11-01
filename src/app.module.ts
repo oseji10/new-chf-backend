@@ -18,6 +18,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './auth/roles.guards';
 import { Doctors } from './doctors/doctors.entity';
 import { DoctorsModule } from './doctors/doctors.module';
+import { SocialWorkersModule } from './social_workers/social_worker.module';
 
 dotenv.config();
 
@@ -45,7 +46,8 @@ dotenv.config();
     HospitalsModule,
     CancersModule,
     StatesModule,
-    DoctorsModule
+    DoctorsModule,
+    SocialWorkersModule
     
   ],
   controllers: [AppController],

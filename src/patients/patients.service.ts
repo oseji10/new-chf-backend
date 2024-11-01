@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Patients } from './patients.entity';
@@ -10,6 +10,8 @@ import { PatientEwallet } from './patient_ewallet.entity';
 import { PatientEwalletTopupRequest } from './patient_ewallet_topup.entity';
 import { Users } from '../users/users.entity';
 import { randomInt } from 'crypto';
+import { SocialWorkerAssessment } from './social_worker_assessment.entity';
+import { SocialCondition } from './social_condition.entity';
 
 @Injectable()
 export class PatientsService {
@@ -31,6 +33,12 @@ export class PatientsService {
 
     @InjectRepository(PatientEwalletTopupRequest)
     private patientEwalletTopupRequestRepository: Repository<PatientEwalletTopupRequest>,
+
+    @InjectRepository(SocialWorkerAssessment)
+    private workerAssessmentRepository: Repository<SocialWorkerAssessment>,
+
+    @InjectRepository(SocialCondition)
+    private socialConditionRepository: Repository<SocialCondition>,
   ) {}
 
 
@@ -48,9 +56,26 @@ export class PatientsService {
     // }
 
     async findPatientByUserId(id: number): Promise<Patients | undefined> {
-      // Ensure we use findOne to get a single Hospitals instance
       return await this.patientsRepository.findOne({ where: { id } });
     }
+
+    
+    async findPatientByLoggedUserId(userId: number): Promise<Patients | undefined> {
+      try {
+        const patient = await this.patientsRepository.findOne({
+          where: { user: { userId } }, // Ensure field matches exactly in `Users` entity
+          relations: ['user'],
+        });
+        console.log("Patient retrieved:", patient); // Debugging check
+        return patient;
+      } catch (error) {
+        console.error("Error in findPatientByLoggedUserId:", error);
+        throw new NotFoundException('Patient not found or query failed');
+      }
+    }
+    
+
+    
 
     async create(userId: number, userData: Partial<Patients>): Promise<Patients> {
       const currentYear = new Date().getFullYear();
@@ -139,6 +164,42 @@ export class PatientsService {
     });
   
     return result ? result.profileCompletionPercentage : null;
+  }
+  
+
+
+  async createWorkerAssessment(
+    userId: number, // ID of the logged-in patient (user)
+    workerAssessment: Partial<SocialWorkerAssessment>
+  ): Promise<SocialWorkerAssessment> {
+    // Create new family history record for the logged-in patient
+    const newWorkerAssessment = this.workerAssessmentRepository.create({
+      ...workerAssessment, // Associate with the logged-in user (patient)
+      updatedBy: { userId } // Optional: if you want to track who updated the record
+    });
+    
+    await this.workerAssessmentRepository.save(newWorkerAssessment);
+    
+    // Return the newly created worker assessment
+    return newWorkerAssessment;
+  }
+
+
+
+  async createSocialCondition(
+    userId: number, // ID of the logged-in patient (user)
+    socialCondition: Partial<SocialCondition>
+  ): Promise<SocialCondition> {
+    // Create new family history record for the logged-in patient
+    const newSocialCondition = this.socialConditionRepository.create({
+      ...socialCondition, // Associate with the logged-in user (patient)
+      updatedBy: { userId } // Optional: if you want to track who updated the record
+    });
+    
+    await this.socialConditionRepository.save(newSocialCondition);
+    
+    // Return the newly created worker assessment
+    return newSocialCondition;
   }
   
   

@@ -44,6 +44,29 @@ export class DoctorsService {
       },
     });
   }
+
+
+
+  // async findAllPatientsReviewedByPP(hospitalId: number): Promise<Patients[]> {
+  //   return await this.patientsRepository.find({
+  //     where: { isPrimaryPhysicianReviewed: 'yes', hospital: hospitalId },
+  //     relations: ['user', 'cancer', 'hospital'], 
+  //     select: {
+  //       user: {
+  //         userId: true,
+  //         email: true,
+  //         phoneNumber: true
+  //       },
+  //       cancer: {
+  //         cancerName: true,
+  //       },
+  //       hospital: {
+  //         hospitalName: true,
+  //         hospitalShortName: true
+  //       },
+  //     },
+  //   });
+  // }
   
 
 
@@ -71,7 +94,10 @@ export class DoctorsService {
       
       await this.patientsRepository.update(
           { user: {userId: patientId }}, 
-          { applicationStage: "primary_physician_reviewed" }
+          { 
+            applicationStage: "primary_physician_reviewed",
+            isPrimaryPhysicianReviewed: "yes" 
+        }
       );
   
       return newCarePlan;

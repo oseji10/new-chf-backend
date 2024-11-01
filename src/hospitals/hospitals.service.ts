@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Hospitals } from './hospitals.entity';
 import * as bcrypt from 'bcrypt';
 import { Doctors } from '../doctors/doctors.entity';
+import { States } from '../states/states.entity';
 
 @Injectable()
 export class HospitalsService {
@@ -34,6 +35,15 @@ export class HospitalsService {
         
       });
     return await this.hospitalsRepository.save(newUser);
+  }
+
+
+  // Method to find all hospitals in a specific state
+  async findHospitalsByState(stateId: number): Promise<Hospitals[]> {
+    return this.hospitalsRepository.find({
+      where: { state: { stateId } },
+      // relations: ['state'],  // Include the state relation if you want state details
+    });
   }
 
 
