@@ -114,7 +114,8 @@ export class SocialWorkersService {
   
   async changePatientStatus(
     userId: number, // ID of the logged-in patient (user)
-    approvalData: Partial<SocialWorkerAssessment>
+    approvalData: Partial<SocialWorkerAssessment>,
+    patientId: number,
   ): Promise<SocialWorkerAssessment> {
     
     // Update the assessment status
@@ -127,6 +128,14 @@ export class SocialWorkersService {
       { patient: { userId } },  
       { ...approvalData } 
     );
+
+    await this.patientsRepository.update(
+      { user: {userId: patientId }}, 
+      { 
+        applicationStage: "social_worker_reviewed",
+        isSocialWorkerReviewed: "yes" 
+    }
+  );
   
     // Fetch the updated assessment
     const updatedAssessment = await this.workerAssessmentRepository.findOne({

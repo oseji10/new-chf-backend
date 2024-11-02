@@ -4,12 +4,12 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToOne, CreateDateColumn, Upd
 // import { Patient } from '../patient/patient.entity';
 
 @Entity()
-export class SocialWorkers {
+export class Mdts {
     @PrimaryGeneratedColumn()
-    socialworkerId: number;
+    mdtId: number;
 
     @Column()
-    socialworkerName: string;
+    mdtName: string;
 
     @Column()
     title: string;

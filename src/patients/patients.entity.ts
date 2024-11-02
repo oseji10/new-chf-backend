@@ -1,9 +1,13 @@
 import { States } from '../states/states.entity';
 import { Users } from '../users/users.entity';
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne, OneToMany } from 'typeorm';
 import { PatientNextOfKin } from './patient_next_of_kin.entity';
 import { Cancers } from '../cancers/cancers.entity';
 import { Hospitals } from '../hospitals/hospitals.entity';
+import { PatientCarePlan } from '../doctors/patient_care_plan.entity';
+import { MdtAssessment } from 'src/mdt/mdt_assessment.entity';
+import { SocialWorkerAssessment } from './social_worker_assessment.entity';
+import { SocialCondition } from './social_condition.entity';
 
 @Entity()
 export class Patients {
@@ -31,6 +35,9 @@ export class Patients {
   @OneToOne(() => Users, (users) => users.userId, {nullable: true,})
   @JoinColumn({ name: 'userId' }) 
   user: Users;
+  
+  // @ManyToOne(() => Users, (user) => user.patients) // Ensure this is correctly defined
+  //   user: Users;
 
   // @Column({nullable: true})
   // userId: number;
@@ -76,7 +83,7 @@ export class Patients {
   // nextOfKin: PatientNextOfKin;
   
   
-  @Column({nullable: true, enum: ['biodata', 'registered', 'primary_physican_reviewed', 'social_welfare_reviewed', 'cmd_reviewed', 'secretariat_reviewed', 'receiving_care'], default: 'biodata'})
+  @Column({nullable: true, enum: ['biodata', 'registered', 'primary_physican_reviewed', 'mdt_reviewed', 'social_worker_reviewed', 'cmd_reviewed', 'secretariat_reviewed', 'receiving_care'], default: 'biodata'})
   applicationStage: string;
   
   @Column({nullable: true, enum: ['active', 'deceased', 'dormant']})
@@ -112,7 +119,7 @@ export class Patients {
 
 
   @Column({nullable: true, enum: ['yes', 'no'], default: 'no'})
-  isSocialWelfareReviewed: string;
+  isSocialWorkerReviewed: string;
 
 
   @Column({nullable: true, enum: ['yes', 'no'], default: 'no'})
@@ -124,4 +131,17 @@ export class Patients {
 
   @Column({nullable: true, enum: ['yes', 'no'], default: 'no'})
   isSecretariatReviewed: string;
+
+
+  @OneToOne(() => PatientCarePlan, (carePlan) => carePlan.patient)
+  carePlans: PatientCarePlan;
+
+  @OneToOne(() => MdtAssessment, (mdtAssessment) => mdtAssessment.patient)
+  mdtAssessment: MdtAssessment;
+
+  @OneToOne(() => SocialWorkerAssessment, (socialWorkerAssessment) => socialWorkerAssessment.patient)
+  socialWorkerAssessment: SocialWorkerAssessment;
+
+  @OneToOne(() => SocialCondition, (socialCondition) => socialCondition.patient)
+  socialCondition: SocialCondition;
 }

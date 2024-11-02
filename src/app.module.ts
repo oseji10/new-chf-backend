@@ -19,6 +19,8 @@ import { RolesGuard } from './auth/roles.guards';
 import { Doctors } from './doctors/doctors.entity';
 import { DoctorsModule } from './doctors/doctors.module';
 import { SocialWorkersModule } from './social_workers/social_worker.module';
+import { MdtsModule } from './mdt/mdt.module';
+import { CmdsModule } from './cmd/cmd.module';
 
 dotenv.config();
 
@@ -47,7 +49,9 @@ dotenv.config();
     CancersModule,
     StatesModule,
     DoctorsModule,
-    SocialWorkersModule
+    SocialWorkersModule,
+    MdtsModule, 
+    CmdsModule
     
   ],
   controllers: [AppController],

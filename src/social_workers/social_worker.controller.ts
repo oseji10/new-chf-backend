@@ -38,11 +38,11 @@ export class SocialWorkersController {
 
   @Patch(':userId/patient-status') // Route to change the patient status
   async changePatientStatus(
-    @Param('userId', ParseIntPipe) userId: number, // Extract and validate userId
-    @Body() approvalData: UpdateSocialWorkerAssessmentDto // Use a DTO for the request body
+    @Param('userId', ParseIntPipe) userId: number, 
+    @Body() approvalData: UpdateSocialWorkerAssessmentDto  & { patientId: number }
   ): Promise<SocialWorkerAssessment> {
     try {
-      return await this.socialworkersService.changePatientStatus(userId, approvalData);
+      return await this.socialworkersService.changePatientStatus(userId, approvalData, approvalData.patientId);
     } catch (error) {
       // Handle not found or other errors
       throw new NotFoundException(error.message);

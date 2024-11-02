@@ -1,6 +1,7 @@
 // src/users/users.entity.ts
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToMany, JoinTable, JoinColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToMany, JoinTable, JoinColumn, OneToMany } from 'typeorm';
 import { Roles } from './roles.entity';
+import { Patients } from 'src/patients/patients.entity';
 
 @Entity()
 export class Users {
@@ -37,4 +38,7 @@ export class Users {
   
   @DeleteDateColumn({ type: 'timestamptz', nullable: true })
   deletedAt?: Date;
+
+  // @OneToMany(() => Patients, (patient) => patient.user)
+  //   patients: Patients[];
 }
