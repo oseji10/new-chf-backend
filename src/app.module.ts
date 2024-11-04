@@ -21,6 +21,7 @@ import { DoctorsModule } from './doctors/doctors.module';
 import { SocialWorkersModule } from './social_workers/social_worker.module';
 import { MdtsModule } from './mdt/mdt.module';
 import { CmdsModule } from './cmd/cmd.module';
+import { SecretariatsModule } from './secretariat/secretariat.module';
 
 dotenv.config();
 
@@ -51,7 +52,8 @@ dotenv.config();
     DoctorsModule,
     SocialWorkersModule,
     MdtsModule, 
-    CmdsModule
+    CmdsModule,
+    SecretariatsModule
     
   ],
   controllers: [AppController],

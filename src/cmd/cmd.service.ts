@@ -35,9 +35,7 @@ export class CmdsService {
     return this.cmdsRepository.find();
   }
 
-   
-// Get all patients assigned to the logged-in CMD
-// Get all patients assigned to the logged-in CMD
+
 async findAllPatients(req): Promise<Patients[]> {
   const cmdUserId = req.user.userId; // Access the logged-in user's ID
 
@@ -55,7 +53,7 @@ async findAllPatients(req): Promise<Patients[]> {
   // Retrieve all patients in the same hospital as the CMD
   return await this.patientsRepository.find({
       where: { hospital: { hospitalId: cmd.hospital.hospitalId } },
-      relations: ['user', 'cancer', 'hospital', 'mdtAssessment', 'socialWorkerAssessment', 'socialCondition'],
+      relations: ['user', 'cancer', 'hospital', 'mdtAssessment', 'socialWorkerAssessment', 'socialCondition', 'carePlans'],
       select: {
           user: { userId: true, email: true, phoneNumber: true },
           cancer: { cancerName: true },

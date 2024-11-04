@@ -1,11 +1,11 @@
 import { States } from '../states/states.entity';
 import { Users } from '../users/users.entity';
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne, OneToMany, ManyToMany, JoinTable } from 'typeorm';
 import { PatientNextOfKin } from './patient_next_of_kin.entity';
 import { Cancers } from '../cancers/cancers.entity';
 import { Hospitals } from '../hospitals/hospitals.entity';
 import { PatientCarePlan } from '../doctors/patient_care_plan.entity';
-import { MdtAssessment } from 'src/mdt/mdt_assessment.entity';
+import { MdtAssessment } from '../mdt/mdt_assessment.entity';
 import { SocialWorkerAssessment } from './social_worker_assessment.entity';
 import { SocialCondition } from './social_condition.entity';
 
@@ -144,4 +144,9 @@ export class Patients {
 
   @OneToOne(() => SocialCondition, (socialCondition) => socialCondition.patient)
   socialCondition: SocialCondition;
+
+  // @ManyToOne(() => MdtAssessment, (mdtAssessment) => mdtAssessment.patientMdt, { nullable: true })
+  // mdtAssessment: MdtAssessment;
+  
+
 }

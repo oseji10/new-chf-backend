@@ -4,7 +4,7 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToOne, CreateDateColumn, Upd
 // import { Patient } from '../patient/patient.entity';
 
 @Entity()
-@Unique(["patient"])
+// @Unique(["patient"])
 export class CmdAssessment {
     @PrimaryGeneratedColumn()
     assesmentId: number;
@@ -14,7 +14,7 @@ export class CmdAssessment {
     cmdId: Users;
 
     @ManyToOne(() => Users, (patients) => patients.userId, )
-    @JoinColumn({ name: 'patientId' }) // Specify column name for clarity
+    @JoinColumn({ name: 'patient' }) // Specify column name for clarity
     patient: Users;
 
     @Column({nullable: true})

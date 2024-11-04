@@ -32,37 +32,68 @@ export class MdtsService {
   }
 
    
-  // Get all patients assigned to the logged-in mdt
-  async findAllPatients(mdtId: number): Promise<Patients[]> {
-    return await this.patientsRepository.find({
-      where: { primaryPhysician: { userId: mdtId } },
-      relations: ['user', 'cancer', 'hospital', 'carePlans'], 
-      select: {
-        user: {
-          userId: true,
-          email: true,
-          phoneNumber: true
-        },
-        cancer: {
-          cancerName: true,
-        },
-        hospital: {
-          hospitalName: true,
-          hospitalShortName: true
-        },
-        carePlans: {
-          careId: true,
-          careplan: true,
-          cost: true,
-          status: true,
-          isApproved: true,
-          comment: true
-        }
-      },
-    });
+  // // Get all patients assigned to the logged-in mdt
+  // async findAllPatients(mdtId: number): Promise<Patients[]> {
+  //   return await this.patientsRepository.find({
+  //     where: { primaryPhysician: { userId: mdtId } },
+  //     relations: ['user', 'cancer', 'hospital', 'carePlans'], 
+  //     select: {
+  //       user: {
+  //         userId: true,
+  //         email: true,
+  //         phoneNumber: true
+  //       },
+  //       cancer: {
+  //         cancerName: true,
+  //       },
+  //       hospital: {
+  //         hospitalName: true,
+  //         hospitalShortName: true
+  //       },
+  //       carePlans: {
+  //         careId: true,
+  //         careplan: true,
+  //         cost: true,
+  //         status: true,
+  //         isApproved: true,
+  //         comment: true
+  //       }
+  //     },
+  //   });
+  // }
+
+
+
+
+
+   
+// 
+// Get all patients assigned to the logged-in MDT
+async findAllPatients(req): Promise<Patients[]> {
+  const mdtUserId = req.user.userId; // Access the logged-in user's ID
+
+  // Fetch the CMD's hospital
+  const mdt = await this.mdtsRepository.findOne({
+      where: { user: mdtUserId },
+      relations: ['hospital'],
+      select: { hospital: { hospitalId: true } },
+  });
+
+  if (!mdt || !mdt.hospital) {
+      throw new NotFoundException('CMD or MDT hospital not found');
   }
 
-
+  // Retrieve all patients in the same hospital as the CMD
+  return await this.patientsRepository.find({
+      where: { hospital: { hospitalId: mdt.hospital.hospitalId } },
+      relations: ['user', 'cancer', 'hospital', 'mdtAssessment', 'socialWorkerAssessment', 'socialCondition', 'carePlans'],
+      select: {
+          user: { userId: true, email: true, phoneNumber: true },
+          cancer: { cancerName: true },
+          hospital: { hospitalName: true, hospitalShortName: true },
+      },
+  });
+}
   // COME BACK TO THESE TWO CODES LATER FOR NOW PULL ALL PATIENTS IRRESPECTIVE OF HOSPITALS
 
 //   async getHospitalIdByUserId(userId: number): Promise<number | undefined> {

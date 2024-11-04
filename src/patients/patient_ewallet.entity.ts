@@ -7,15 +7,18 @@ export class PatientEwallet {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToOne(() => Patients, (patients) => patients.nchfId)
-  @JoinColumn()
-  chfId: Patients;
+  @OneToOne(() => Users, (patients) => patients.userId)
+  @JoinColumn({name: 'userId'})
+  user: Users;
 
   @Column({ nullable: true,  type: 'decimal' })
   credit: number;
 
   @Column({ nullable: true,  type: 'decimal' })
   debit: number;
+
+  @Column({ nullable: true})
+  status: string;
 
 
   @ManyToOne(() => Users, (users) => users.userId, { nullable: true })

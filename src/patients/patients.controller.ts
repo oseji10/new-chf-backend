@@ -21,12 +21,13 @@ import { SocialCondition } from './social_condition.entity';
 export class PatientsController {
   constructor(private readonly patientsService: PatientsService) {}
   
-  // @Get()
-  // @UseGuards(JwtAuthGuard) 
-  // @UseFilters(UnauthorizedExceptionFilter) 
-  // findAll() {
-  //   return this.patientsService.findAll();
-  // }
+  @Get('wallet-balance')
+  @UseGuards(JwtAuthGuard) 
+  @UseFilters(UnauthorizedExceptionFilter)
+  walletBalance(@CurrentUser() user: Users) {
+      return this.patientsService.walletBalance(user.userId);
+  }
+  
 
   @Get('applications')
   @Roles(Role.DOCTOR, Role.ADMIN)

@@ -39,6 +39,10 @@ export class PatientsService {
 
     @InjectRepository(SocialCondition)
     private socialConditionRepository: Repository<SocialCondition>,
+
+    // @InjectRepository(PatientEwallet)
+    // private workerAssessmentRepository: Repository<SocialWorkerAssessment>,
+
   ) {}
 
 
@@ -203,4 +207,32 @@ export class PatientsService {
   }
   
   
+
+  // async walletBalance(
+  //   secretariatId: number, 
+  //   patient: number, 
+  //   isApproved: string,
+  //   recommendationData: Partial<PatientEwallet>
+  // ): Promise<PatientEwallet> {
+  //   // Step 1: Create a new care plan
+  //   const patientQ = await this.patientsRepository.findOne({  where: { user: { userId: patient } } });
+    
+  //   if (!patientQ) {
+  //       throw new Error('Patient not found');
+  //   }
+
+  //   return patientQ
+
+
+  async walletBalance(userId: number): Promise<Partial<PatientEwallet> | null> {
+    return this.patientEwalletRepository.findOne({
+        where: { user: { userId } },
+        select: {
+            id: true,         
+            credit: true     
+        },
+    });
+}
+
+
 }

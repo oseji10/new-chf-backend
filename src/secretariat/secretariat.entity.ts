@@ -1,16 +1,15 @@
 import { Users } from '../users/users.entity';
 import { Hospitals } from '../hospitals/hospitals.entity';
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToMany, ManyToOne, OneToMany, JoinColumn } from 'typeorm';
-import { Patients } from '../patients/patients.entity';
-
+// import { Patient } from '../patient/patient.entity';
 
 @Entity()
-export class Mdts {
+export class Secretariats {
     @PrimaryGeneratedColumn()
-    mdtId: number;
+    secretariatId: number;
 
     @Column()
-    mdtName: string;
+    secretariatName: string;
 
     @Column()
     title: string;
@@ -40,6 +39,4 @@ export class Mdts {
    
     @DeleteDateColumn({ type: 'timestamptz', nullable: true })
     deletedAt?: Date;
-
-   
 }

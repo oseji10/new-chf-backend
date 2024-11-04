@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Delete, Put, UseGuards, UseFilters, Req, NotFoundException, Patch, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put, UseGuards, UseFilters, Req, NotFoundException, Patch, ParseIntPipe, Request } from '@nestjs/common';
 import { MdtsService } from './mdt.service';
 import { Mdts } from './mdt.entity';
 import { Roles } from 'src/auth/roles.decorator';
@@ -30,12 +30,17 @@ export class MdtsController {
   }
 
 
-  @Get('patients')
-  @UseGuards(JwtAuthGuard)
-  async findAllPatients(@CurrentUser() user: Users) {
-    return this.mdtsService.findAllPatients(user.userId);
-  }
+  // @Get('patients')
+  // @UseGuards(JwtAuthGuard)
+  // async findAllPatients(@CurrentUser() user: Users) {
+  //   return this.mdtsService.findAllPatients(user.userId);
+  // }
 
+  @UseGuards(JwtAuthGuard) // Apply the guard here
+  @Get('patients')
+  async findAllPatients(@Request() req) {
+      return this.mdtsService.findAllPatients(req);
+  }
 
   // @Patch(':userId/patient-status') // Route to change the patient status
   // async changePatientStatus(

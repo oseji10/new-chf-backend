@@ -1,32 +1,28 @@
 import { Users } from '../users/users.entity';
 import { Hospitals } from '../hospitals/hospitals.entity';
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToMany, ManyToOne, OneToMany, JoinColumn } from 'typeorm';
-import { Patients } from '../patients/patients.entity';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToMany, ManyToOne, OneToMany, JoinColumn, Unique } from 'typeorm';
 // import { Patient } from '../patient/patient.entity';
 
 @Entity()
-export class MdtAssessment {
+// @Unique(["patient"])
+export class SecretariatAssessment {
     @PrimaryGeneratedColumn()
     assesmentId: number;
 
     @ManyToOne(() => Users, (users) => users.userId, { nullable: true })
-    @JoinColumn({ name: 'doctorId' }) // Specify column name for clarity
-    cmdId: Users;
+    @JoinColumn({ name: 'secretariatId' }) // Specify column name for clarity
+    secretariatId: Users;
 
-    @ManyToOne(() => Users, (patients) => patients.userId, { nullable: true })
-    @JoinColumn({ name: 'patientId' }) // Specify column name for clarity
+    @ManyToOne(() => Users, (patients) => patients.userId, )
+    @JoinColumn({ name: 'userId' }) // Specify column name for clarity
     patient: Users;
 
-    // @ManyToOne(() => Patients, (patient) => patient.mdtAssessment, { nullable: false })
-    // @JoinColumn({ name: 'patientId' })
-    // patientMdt: Patients;
     
-
 
     @Column({nullable: true})
     recommendations: string;
 
-    @Column()
+    @Column({nullable: true})
     cost: string;
 
     @Column({ nullable: true, enum: ['active', 'inactive'], default: 'active' })
