@@ -3,14 +3,20 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Users } from './users.entity';
 import * as bcrypt from 'bcrypt';
+import { Roles } from './roles.entity';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(Users)
     private readonly usersRepository: Repository<Users>,
+
+    @InjectRepository(Roles)
+    private rolesRepository: Repository<Roles>,
   ) {}
 
+
+  
 
     // Find all users
     findAll(): Promise<Users[]> {
@@ -43,10 +49,28 @@ export class UsersService {
 //     return this.usersRepository.save(newUser);  // Save the new user to the database
 //   }
   
-async findByEmail(email: string): Promise<Users | undefined> {
-  const user = await this.usersRepository.findOne({ where: { email } });
-  console.log("User fetched by email:", user); // Log the user found or undefined
-  return user;
+// async findByEmail(email: string): Promise<Users | undefined> {
+//   const user = await this.usersRepository.findOne({ where: { email } });
+//   console.log("User fetched by email:", user); // Log the user found or undefined
+//   return user;
+// }
+
+
+async findByEmail(email: string): Promise<Users> {
+  return this.usersRepository.findOne({
+    where: { email },
+    relations: ['roles'],  // Load roles with the user
+  });
+}
+
+async assignRole(userId: number, roleName: string): Promise<void> {
+  const user = await this.usersRepository.findOne({ where: { userId }, relations: ['roles'] });
+  const role = await this.rolesRepository.findOne({ where: { roleName } });
+
+  if (user && role) {
+    user.roles = [...user.roles, role];
+    await this.usersRepository.save(user);
+  }
 }
 
 

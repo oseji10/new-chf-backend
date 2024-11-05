@@ -29,17 +29,33 @@ export class AuthService {
 }
 
 
+// async login(email: string, password: string) {
+//   const user = await this.validateUser(email, password);
+//   if (!user) {
+//     throw new UnauthorizedException('Invalid email or password');
+//   }
+
+  
+
+//   const payload = { username: user.username, sub: user.userId };
+//   return {
+//     token: this.jwtService.sign(payload),
+//   };
+// }
+
 async login(email: string, password: string) {
   const user = await this.validateUser(email, password);
   if (!user) {
     throw new UnauthorizedException('Invalid email or password');
   }
 
-  
+  // Map roles to a simpler array of role names
+  const roles = user.roles.map((role) => role.roleName);
 
-  const payload = { username: user.username, sub: user.userId };
+  const payload = { username: user.email, sub: user.userId, roles };
   return {
     token: this.jwtService.sign(payload),
+    user: { id: user.userId, roles },
   };
 }
 

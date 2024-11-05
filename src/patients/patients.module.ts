@@ -11,9 +11,20 @@ import { PatientPersonalHistory } from './patient_personal_history.entity';
 import { PatientCarePlan } from '../doctors/patient_care_plan.entity';
 import { SocialWorkerAssessment } from './social_worker_assessment.entity';
 import { SocialCondition } from './social_condition.entity';
+import { Users } from '../users/users.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Patients, PatientEwallet, PatientEwalletTopupRequest, PatientNextOfKin, PatientFamilyHistory, PatientPersonalHistory, PatientCarePlan, SocialWorkerAssessment, SocialCondition])],
+  imports: [TypeOrmModule.forFeature([Patients, 
+    PatientEwallet, 
+    PatientEwalletTopupRequest, 
+    PatientNextOfKin, 
+    PatientFamilyHistory, 
+    PatientPersonalHistory, 
+    PatientCarePlan, 
+    SocialWorkerAssessment, 
+    SocialCondition,
+    Users
+  ])],
   providers: [PatientsService],
   controllers: [PatientsController],
   exports: [PatientsService], // Export PatientsService here

@@ -203,7 +203,7 @@ async createSecretariatAssessment(
 
   const eWalletEntry = this.patientEwalletRepository.create({
     user: patientQ.user,  // Reference the full patient entity as a User
-    credit: 10000,       // Credit amount
+    credit: 1000000,       // Credit amount
     status: 'credited',  // Status of the transaction
     processedBy:  { userId: secretariatId },  // User who processed the credit
 });

@@ -36,6 +36,16 @@ export class PatientsController {
   findAll() {
     return this.patientsService.findAll();
   }
+
+
+  @Get('biodata')
+  // @Roles(Role.PATIENT)
+  @UseGuards(JwtAuthGuard)
+  @UseFilters(UnauthorizedExceptionFilter) 
+  findOne(@CurrentUser() user: Users) {
+    return this.patientsService.findPatientByLoggedUserId(user.userId); // Pass user.userId here
+  }
+
   
   @Post('biodata')
   @UseGuards(JwtAuthGuard)

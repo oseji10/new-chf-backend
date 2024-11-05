@@ -28,6 +28,10 @@ export class Users {
     inverseJoinColumn: { name: 'roleId', referencedColumnName: 'roleId' },
   })
   roles: Roles[];
+
+  // @ManyToMany(() => Roles, (role) => role.users)
+  // @JoinTable()
+  // roles: Roles[];
   
   // Timestamp fields
   @CreateDateColumn({ type: 'timestamptz' })

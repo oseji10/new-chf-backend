@@ -22,4 +22,6 @@ export class Roles {
   
   @DeleteDateColumn({ type: 'timestamptz', nullable: true })
   deletedAt?: Date;
+
+  
 }
