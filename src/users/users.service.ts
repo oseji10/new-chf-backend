@@ -63,15 +63,15 @@ async findByEmail(email: string): Promise<Users> {
   });
 }
 
-async assignRole(userId: number, roleName: string): Promise<void> {
-  const user = await this.usersRepository.findOne({ where: { userId }, relations: ['roles'] });
-  const role = await this.rolesRepository.findOne({ where: { roleName } });
+// async assignRole(userId: number, roleName: string): Promise<void> {
+//   const user = await this.usersRepository.findOne({ where: { userId }, relations: ['roles'] });
+//   const role = await this.rolesRepository.findOne({ where: { roleName } });
 
-  if (user && role) {
-    user.roles = [...user.roles, role];
-    await this.usersRepository.save(user);
-  }
-}
+//   if (user && role) {
+//     user.roles = [...user.roles, role];
+//     await this.usersRepository.save(user);
+//   }
+// }
 
 
   async findById(userId: number): Promise<Users | undefined> {

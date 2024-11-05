@@ -1,32 +1,31 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, 
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
   CreateDateColumn,
   UpdateDateColumn,
-  DeleteDateColumn,
-  OneToOne, } from 'typeorm';
-// import { States } from '../states/states.entity';
-// import { States } from '../users/users.entity';
+  DeleteDateColumn
+} from 'typeorm';
 
-@Entity()
+@Entity('regions')  // Explicitly set the table name for MySQL
 export class Regions {
-  @PrimaryGeneratedColumn()
-    regionId: number;
+  @PrimaryGeneratedColumn()  // Auto-increment primary key
+  regionId: number;
 
-    @Column({nullable: true})
-    shortName: string;
-  
-    @Column({nullable: true})
-    regionName: string;
-  
-   
-     // Timestamp fields
-  @CreateDateColumn({ type: 'timestamptz' }) // 'timestamptz' stores timezone info
+  @Column({ type: 'varchar', length: 255, nullable: true })  // Specify type, length, and nullability for MySQL
+  shortName: string;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })  // Specify type, length, and nullability for MySQL
+  regionName: string;
+
+  // Timestamp fields
+
+  @CreateDateColumn({ type: 'datetime', nullable: false })  // Remove default value
   createdAt: Date;
 
-  @UpdateDateColumn({ type: 'timestamptz' })
+  @UpdateDateColumn({ type: 'datetime', nullable: false })  // Remove default value
   updatedAt: Date;
 
-  // Soft delete field
-  @DeleteDateColumn({ type: 'timestamptz', nullable: true })
+  @DeleteDateColumn({ type: 'datetime', nullable: true })
   deletedAt?: Date;
-
 }

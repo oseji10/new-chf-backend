@@ -1,54 +1,51 @@
 import { Users } from '../users/users.entity';
 import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne } from 'typeorm';
-import { Patients } from './patients.entity';
 
-@Entity()
+@Entity('social_conditions')  // Explicitly set the table name for MySQL
 export class SocialCondition {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn()  // Auto-increment primary key
   id: number;
 
   @OneToOne(() => Users, (users) => users.userId, { nullable: true })
-  @JoinColumn()
+  @JoinColumn()  // Foreign key column
   patient: Users;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })  // Specify type for runningWater
   runningWater: string;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })  // Specify type for typeOfToilet
   typeOfToilet: string;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })  // Specify type for powerSupply
   powerSupply: string;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })  // Specify type for meansOfTransport
   meansOfTransport: string;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })  // Specify type for mobilePhone
   mobilePhone: string;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })  // Specify type for howIsPhoneMaintained
   howIsPhoneMaintained: string;
 
-  
   @ManyToOne(() => Users, (users) => users.userId, { nullable: true })
-  @JoinColumn()
+  @JoinColumn({ name: 'updatedBy' })  // Specify column name for clarity
   updatedBy: Users;
 
-  @Column({nullable: true})
+  @Column({ type: 'varchar', nullable: true })  // Specify type for isApproved
   isApproved: string;
 
-
-  @Column({nullable: true})
+  @Column({ type: 'text', nullable: true })  // Specify type for comments
   comment: string;
 
+  // Timestamp fields
 
-     // Timestamp fields
-     @CreateDateColumn({ type: 'timestamptz' })
-     createdAt: Date;
-    
-     @UpdateDateColumn({ type: 'timestamptz' })
-     updatedAt: Date;
-    
-     @DeleteDateColumn({ type: 'timestamptz', nullable: true })
-     deletedAt?: Date;
+  @CreateDateColumn({ type: 'datetime', nullable: false })  // Remove default value
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: 'datetime', nullable: false })  // Remove default value
+  updatedAt: Date;
+
+  @DeleteDateColumn({ type: 'datetime', nullable: true })
+  deletedAt?: Date;
 }

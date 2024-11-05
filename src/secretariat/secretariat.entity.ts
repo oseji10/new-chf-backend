@@ -1,42 +1,49 @@
 import { Users } from '../users/users.entity';
 import { Hospitals } from '../hospitals/hospitals.entity';
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToMany, ManyToOne, OneToMany, JoinColumn } from 'typeorm';
-// import { Patient } from '../patient/patient.entity';
+import {
+    Entity,
+    PrimaryGeneratedColumn,
+    Column,
+    OneToOne,
+    CreateDateColumn,
+    UpdateDateColumn,
+    DeleteDateColumn,
+    ManyToOne,
+    JoinColumn
+} from 'typeorm';
 
-@Entity()
+@Entity('secretariats')  // Explicitly set the table name for MySQL
 export class Secretariats {
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn()  // Auto-increment primary key
     secretariatId: number;
 
-    @Column()
+    @Column({ type: 'varchar', length: 255 })  // Specify type and length for secretariatName
     secretariatName: string;
 
-    @Column()
+    @Column({ type: 'varchar', length: 100 })  // Specify type and length for title
     title: string;
 
-    @Column()
+    @Column({ type: 'varchar', length: 100 })  // Specify type and length for department
     department: string;
 
-    @Column({nullable: true, enum: ['active', 'inactive'], default: 'active' })
+    @Column({ type: 'enum', enum: ['active', 'inactive'], default: 'active' })  // Use enum type for status
     status: string;
 
-  
-
-    @ManyToOne(() => Hospitals, (hospital) => hospital.hospitalId)
+    @ManyToOne(() => Hospitals, (hospital) => hospital.hospitalId, { nullable: false })  // Many-to-one relationship with Hospitals
     @JoinColumn()
-  hospital: Hospitals;
+    hospital: Hospitals;
 
-    @OneToOne(() => Users, (users) => users.userId, { nullable: true })
+    @OneToOne(() => Users, (users) => users.userId, { nullable: true })  // One-to-one relationship with Users
     @JoinColumn()
     user: Users;
 
-    // Timestamp fields
-    @CreateDateColumn({ type: 'timestamptz' })
+  
+    @CreateDateColumn({ type: 'datetime', nullable: false })  // Remove default value
     createdAt: Date;
-   
-    @UpdateDateColumn({ type: 'timestamptz' })
+  
+    @UpdateDateColumn({ type: 'datetime', nullable: false })  // Remove default value
     updatedAt: Date;
-   
-    @DeleteDateColumn({ type: 'timestamptz', nullable: true })
+  
+    @DeleteDateColumn({ type: 'datetime', nullable: true })
     deletedAt?: Date;
 }

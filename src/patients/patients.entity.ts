@@ -1,6 +1,6 @@
 import { States } from '../states/states.entity';
 import { Users } from '../users/users.entity';
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne, OneToMany, ManyToMany, JoinTable } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne } from 'typeorm';
 import { PatientNextOfKin } from './patient_next_of_kin.entity';
 import { Cancers } from '../cancers/cancers.entity';
 import { Hospitals } from '../hospitals/hospitals.entity';
@@ -9,129 +9,122 @@ import { MdtAssessment } from '../mdt/mdt_assessment.entity';
 import { SocialWorkerAssessment } from './social_worker_assessment.entity';
 import { SocialCondition } from './social_condition.entity';
 
-@Entity()
+@Entity('patients')  // Explicitly set the table name for MySQL
 export class Patients {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn()  // Auto-increment primary key
   id: number;
 
-  @Column({ unique: true })
+  @Column({ type: 'varchar', unique: true })  // Specify type for nchfId
   nchfId: string;
 
-  @Column({ unique: true })
+  @Column({ type: 'varchar', unique: true })  // Specify type for nin
   nin: string;
 
-  @Column({nullable: true,})
+  @Column({ type: 'varchar', nullable: true })  // Specify type for hospitalFileNumber
   hospitalFileNumber: string;
 
-  @Column({nullable: true,})
+  @Column({ type: 'varchar', nullable: true })  // Specify type for firstName
   firstName: string;
 
-  @Column({nullable: true,})
+  @Column({ type: 'varchar', nullable: true })  // Specify type for lastName
   lastName: string;
 
-  @Column({nullable: true,})
+  @Column({ type: 'varchar', nullable: true })  // Specify type for otherNames
   otherNames: string;
 
-  @OneToOne(() => Users, (users) => users.userId, {nullable: true,})
-  @JoinColumn({ name: 'userId' }) 
+  @OneToOne(() => Users, (users) => users.userId, { nullable: true })
+  @JoinColumn({ name: 'userId' })  // Foreign key column for user
   user: Users;
-  
-  // @ManyToOne(() => Users, (user) => user.patients) // Ensure this is correctly defined
-  //   user: Users;
 
-  // @Column({nullable: true})
-  // userId: number;
-
-  @Column({nullable: true,})
+  @Column({ type: 'varchar', nullable: true })  // Specify type for gender
   gender: string;
 
-  @Column({nullable: true,})
+  @Column({ type: 'varchar', nullable: true })  // Specify type for ethnicity
   ethnicity: string;
 
-  @Column({nullable: true,})
+  @Column({ type: 'varchar', nullable: true })  // Specify type for maritalStatus
   maritalStatus: string;
 
-  @Column({nullable: true,})
-  numberOfChildren: string;
+  @Column({ type: 'int', nullable: true })  // Specify type for numberOfChildren
+  numberOfChildren: number;
 
-  @Column({nullable: true,})
+  @Column({ type: 'varchar', nullable: true })  // Specify type for levelOfEducation
   levelOfEducation: string;
 
-  @Column({nullable: true,})
+  @Column({ type: 'varchar', nullable: true })  // Specify type for religion
   religion: string;
 
-  @Column({nullable: true,})
+  @Column({ type: 'varchar', nullable: true })  // Specify type for occupation
   occupation: string;
 
-  @Column({nullable: true,})
+  @Column({ type: 'date', nullable: true })  // Specify type for dateOfBirth
   dateOfBirth: string;
- 
-  @OneToOne(() => Users, (users) => users.userId, {nullable: true,})
+
+  @OneToOne(() => Users, (users) => users.userId, { nullable: true })
   @JoinColumn()
   primaryPhysician: Users;
 
-  @OneToOne(() => States, (states) => states.stateId, {nullable: true,})
+  @OneToOne(() => States, (states) => states.stateId, { nullable: true })
   @JoinColumn()
   stateOfOrigin: States;
 
-  @OneToOne(() => States, (states) => states.stateId, {nullable: true,})
+  @OneToOne(() => States, (states) => states.stateId, { nullable: true })
   @JoinColumn()
   stateOfResidence: States;
 
-  // @OneToOne(() => PatientNextOfKin, (patient_next_of_kin) => patient_next_of_kin.nokId, { nullable: true })
-  // @JoinColumn()
-  // nextOfKin: PatientNextOfKin;
-  
-  
-  @Column({nullable: true, enum: ['biodata', 'registered', 'primary_physican_reviewed', 'mdt_reviewed', 'social_worker_reviewed', 'cmd_reviewed', 'secretariat_reviewed', 'receiving_care'], default: 'biodata'})
+  @Column({
+    type: 'enum',
+    enum: ['biodata', 'registered', 'primary_physician_reviewed', 'mdt_reviewed', 'social_worker_reviewed', 'cmd_reviewed', 'secretariat_reviewed', 'receiving_care'],
+    default: 'biodata'
+  })  // Enum for applicationStage
   applicationStage: string;
-  
-  @Column({nullable: true, enum: ['active', 'deceased', 'dormant']})
+
+  @Column({
+    type: 'enum',
+    enum: ['active', 'deceased', 'dormant'],
+    nullable: true
+  })  // Enum for status
   status: string;
 
-  @OneToOne(() => Cancers, (cancers) => cancers.cancerId, {nullable: true,})
+  @OneToOne(() => Cancers, (cancers) => cancers.cancerId, { nullable: true })
   @JoinColumn()
   cancer: Cancers;
 
-  @Column({nullable: true,})
+  @Column({ type: 'varchar', nullable: true })  // Specify type for cancerStage
   cancerStage: string;
 
-     // Timestamp fields
-     @CreateDateColumn({ type: 'timestamptz' })
-     createdAt: Date;
-    
-     @UpdateDateColumn({ type: 'timestamptz' })
-     updatedAt: Date;
-    
-     @DeleteDateColumn({ type: 'timestamptz', nullable: true })
-     deletedAt?: Date;
+  // Timestamp fields
 
+  @CreateDateColumn({ type: 'datetime', nullable: false })  // Remove default value
+  createdAt: Date;
 
-     @ManyToOne(() => Hospitals, (hospitals) => hospitals.hospitalId, { nullable: true })
+  @UpdateDateColumn({ type: 'datetime', nullable: false })  // Remove default value
+  updatedAt: Date;
+
+  @DeleteDateColumn({ type: 'datetime', nullable: true })
+  deletedAt?: Date;
+
+  @ManyToOne(() => Hospitals, (hospitals) => hospitals.hospitalId, { nullable: true })
   @JoinColumn()
   hospital: Hospitals;
 
-  @Column({nullable: true,})
+  @Column({ type: 'varchar', nullable: true })  // Specify type for profileCompletionPercentage
   profileCompletionPercentage: string;
 
-  @Column({nullable: true, enum: ['yes', 'no'], default: 'no'})
+  @Column({ type: 'enum', enum: ['yes', 'no'], default: 'no' })  // Enum for isPrimaryPhysicianReviewed
   isPrimaryPhysicianReviewed: string;
 
-
-  @Column({nullable: true, enum: ['yes', 'no'], default: 'no'})
+  @Column({ type: 'enum', enum: ['yes', 'no'], default: 'no' })  // Enum for isSocialWorkerReviewed
   isSocialWorkerReviewed: string;
 
-
-  @Column({nullable: true, enum: ['yes', 'no'], default: 'no'})
+  @Column({ type: 'enum', enum: ['yes', 'no'], default: 'no' })  // Enum for isMdtReviewed
   isMdtReviewed: string;
 
-
-  @Column({nullable: true, enum: ['yes', 'no'], default: 'no'})
+  @Column({ type: 'enum', enum: ['yes', 'no'], default: 'no' })  // Enum for isCmdReviewed
   isCmdReviewed: string;
 
-  @Column({nullable: true, enum: ['yes', 'no'], default: 'no'})
+  @Column({ type: 'enum', enum: ['yes', 'no'], default: 'no' })  // Enum for isSecretariatReviewed
   isSecretariatReviewed: string;
-
 
   @OneToOne(() => PatientCarePlan, (carePlan) => carePlan.patient)
   carePlans: PatientCarePlan;
@@ -144,9 +137,4 @@ export class Patients {
 
   @OneToOne(() => SocialCondition, (socialCondition) => socialCondition.patient)
   socialCondition: SocialCondition;
-
-  // @ManyToOne(() => MdtAssessment, (mdtAssessment) => mdtAssessment.patientMdt, { nullable: true })
-  // mdtAssessment: MdtAssessment;
-  
-
 }

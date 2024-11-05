@@ -6,10 +6,10 @@ import * as dotenv from 'dotenv';
 dotenv.config(); 
 
 export const AppDataSource = new DataSource({
-  type: 'postgres',
+  type: 'mysql',
   host: process.env.DB_HOST || 'localhost',
-  port: +process.env.DB_PORT || 5432,
-  username: process.env.DB_USERNAME || 'postgres',
+  port: +process.env.DB_PORT || 3306,
+  username: process.env.DB_USERNAME || 'root',
   password: process.env.DB_PASSWORD || '2wsxzaQ1!',
   database: process.env.DB_DATABASE || 'chf',
   // entities: [Patient, Hospital, User, Disease, State],

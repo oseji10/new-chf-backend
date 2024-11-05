@@ -7,15 +7,11 @@ export class PatientPersonalHistory {
   @PrimaryGeneratedColumn()
   id: number;
 
-  // @OneToOne(() => Patients, (patients) => patients.chfId)
-  // @JoinColumn()
-  // chfId: Patients;
-
-  @OneToOne(() => Users, (users) => users.userId, { nullable: true })
+  @OneToOne(() => Users, (user) => user.userId, { nullable: true })
   @JoinColumn()
   user: Users;
 
-  @Column({ unique: true,  type: 'decimal' })
+  @Column({ unique: true, type: 'decimal' })
   averageMonthlyIncome: number;
 
   @Column({ nullable: true })
@@ -25,23 +21,22 @@ export class PatientPersonalHistory {
   whoProvidesFeeding: string;
 
   @Column({ nullable: true })
-  accomodation: string;
+  accommodation: string; // corrected spelling
 
   @Column({ nullable: true })
-  accomodationType: string;
+  accommodationType: string; // corrected spelling
 
   @Column({ nullable: true })
-  numberOfGoodSetOfClothes: number;
+  numberOfGoodSetsOfClothes: number; // pluralized for clarity
 
   @Column({ nullable: true })
-  howAreClothesGotten: string;
+  howAreClothesObtained: string; // improved clarity
 
- 
   @Column({ nullable: true })
   hospitalReceivingCare: string;
-  
+
   @Column({ nullable: true })
-  whyDidYouChooseHospital: string;
+  reasonForChoosingHospital: string; // improved clarity
 
   @Column({ nullable: true })
   levelOfSpousalSupport: string;
@@ -49,20 +44,17 @@ export class PatientPersonalHistory {
   @Column({ nullable: true })
   otherSupport: string;
 
- 
-
-  @ManyToOne(() => Users, (users) => users.userId, { nullable: true })
+  @ManyToOne(() => Users, (user) => user.userId, { nullable: true })
   @JoinColumn()
   updatedBy: Users;
 
 
-     // Timestamp fields
-     @CreateDateColumn({ type: 'timestamptz' })
-     createdAt: Date;
-    
-     @UpdateDateColumn({ type: 'timestamptz' })
-     updatedAt: Date;
-    
-     @DeleteDateColumn({ type: 'timestamptz', nullable: true })
-     deletedAt?: Date;
+  @CreateDateColumn({ type: 'datetime', nullable: false })  // Remove default value
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: 'datetime', nullable: false })  // Remove default value
+  updatedAt: Date;
+
+  @DeleteDateColumn({ type: 'datetime', nullable: true })
+  deletedAt?: Date;
 }

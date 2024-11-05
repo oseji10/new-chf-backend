@@ -1,7 +1,18 @@
 import { Doctors } from '../doctors/doctors.entity';
 import { States } from '../states/states.entity';
 import { Users } from '../users/users.entity';
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne, OneToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToOne,
+  JoinColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  DeleteDateColumn,
+  ManyToOne,
+  OneToMany
+} from 'typeorm';
 
 @Entity()
 export class Hospitals {
@@ -23,34 +34,32 @@ export class Hospitals {
   @Column({ nullable: true })
   accountName: string;
 
-  @Column({ nullable: true })
-  accountNumber: number;
+  @Column({ type: 'varchar', nullable: true }) // Change type to varchar for accountNumber
+  accountNumber: string; // Changed to string to allow for leading zeros
 
   @Column({ nullable: true })
   sortCode: string;
 
-  // @OneToOne(() => Users, (users) => users.userId)
-  // @JoinColumn()
-  // cmd: Users;
-
-  @ManyToOne(() => States, (states) => states.stateId, { nullable: true })
+  // Relationships
+  @ManyToOne(() => States, (state) => state.stateId, { nullable: true })
   @JoinColumn()
   state: States;
 
+  // Uncomment and modify this relationship as needed
   // @OneToOne(() => Users, (users) => users.userId)
   // @JoinColumn()
   // hospitalAdmin: Users;
-  
-   // Timestamp fields
-   @CreateDateColumn({ type: 'timestamptz' })
-   createdAt: Date;
-  
-   @UpdateDateColumn({ type: 'timestamptz' })
-   updatedAt: Date;
-  
-   @DeleteDateColumn({ type: 'timestamptz', nullable: true })
-   deletedAt?: Date;
 
-   @OneToMany(() => Doctors, (doctor) => doctor.hospital)
-   doctors: Doctors[];
+  @OneToMany(() => Doctors, (doctor) => doctor.hospital)
+  doctors: Doctors[];
+
+  // Timestamp fields
+  @CreateDateColumn({ type: 'datetime', nullable: false })
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: 'datetime', nullable: false })
+  updatedAt: Date;
+
+  @DeleteDateColumn({ type: 'datetime', nullable: true })
+  deletedAt?: Date;
 }

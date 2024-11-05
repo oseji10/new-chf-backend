@@ -18,11 +18,11 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
-  @Post(':userId/assign-role')
-  async assignRole(@Param('userId') userId: number, @Body('role') roleName: string) {
-    await this.usersService.assignRole(userId, roleName);
-    return { message: `Role ${roleName} assigned to user ${userId}` };
-  }
+  // @Post(':userId/assign-role')
+  // async assignRole(@Param('userId') userId: number, @Body('role') roleName: string) {
+  //   await this.usersService.assignRole(userId, roleName);
+  //   return { message: `Role ${roleName} assigned to user ${userId}` };
+  // }
 
 //   @Get(':id')
 //   findOne(@Param('id') id: string) {

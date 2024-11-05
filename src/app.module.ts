@@ -46,6 +46,13 @@ dotenv.config();
       password: "6ytrew21!2wsxzaQ1!",
       database: "ileahzto_chf",
 
+      // host: 'localhost',
+      // port: 3306,
+      // type: 'mysql',
+      // username: "root",
+      // password: "2wsxzaQ1!",
+      // database: "chf",
+
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       migrations: [join(__dirname, 'migrations/*.ts')],
       synchronize: true,

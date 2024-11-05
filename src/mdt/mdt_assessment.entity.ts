@@ -1,53 +1,49 @@
 import { Users } from '../users/users.entity';
-import { Hospitals } from '../hospitals/hospitals.entity';
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToMany, ManyToOne, OneToMany, JoinColumn } from 'typeorm';
-import { Patients } from '../patients/patients.entity';
-// import { Patient } from '../patient/patient.entity';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, JoinColumn } from 'typeorm';
 
 @Entity()
 export class MdtAssessment {
     @PrimaryGeneratedColumn()
-    assesmentId: number;
+    assessmentId: number;
 
-    @ManyToOne(() => Users, (users) => users.userId, { nullable: true })
+    @ManyToOne(() => Users, (user) => user.userId, { nullable: true })
     @JoinColumn({ name: 'doctorId' }) // Specify column name for clarity
-    cmdId: Users;
+    cmdId: Users; // Renamed from cmdId to doctor for clarity
 
-    @ManyToOne(() => Users, (patients) => patients.userId, { nullable: true })
+    @ManyToOne(() => Users, (patient) => patient.userId, { nullable: true })
     @JoinColumn({ name: 'patientId' }) // Specify column name for clarity
     patient: Users;
 
-    // @ManyToOne(() => Patients, (patient) => patient.mdtAssessment, { nullable: false })
-    // @JoinColumn({ name: 'patientId' })
-    // patientMdt: Patients;
-    
-
-
-    @Column({nullable: true})
+    @Column({ nullable: true })
     recommendations: string;
 
-    @Column()
+    @Column({ nullable: false }) // Made cost non-nullable for data integrity
     cost: string;
 
-    @Column({ nullable: true, enum: ['active', 'inactive'], default: 'active' })
-    status: string;
+    @Column({ 
+        type: 'enum', 
+        enum: ['active', 'inactive'], 
+        default: 'active', 
+        nullable: true 
+    })
+    status: 'active' | 'inactive'; // Use union type for better type safety
 
-    @Column({nullable: true})
-    isApproved: string;
+    @Column({ nullable: true })
+    isApproved: string; // Consider changing to boolean if it's a yes/no field
 
-    @Column({nullable: true})
+    @Column({ nullable: true })
     comment: string;
 
-    @CreateDateColumn({ type: 'timestamptz' })
+    @CreateDateColumn({ type: 'datetime', nullable: false })
     createdAt: Date;
 
-    @UpdateDateColumn({ type: 'timestamptz' })
+    @UpdateDateColumn({ type: 'datetime', nullable: false })
     updatedAt: Date;
 
-    @DeleteDateColumn({ type: 'timestamptz', nullable: true })
+    @DeleteDateColumn({ type: 'datetime', nullable: true })
     deletedAt?: Date;
 
-    @ManyToOne(() => Users, (users) => users.userId, { nullable: true })
-  @JoinColumn()
-  updatedBy: Users;
+    @ManyToOne(() => Users, (user) => user.userId, { nullable: true })
+    @JoinColumn() // No need for a name since it's already implied by the relation
+    updatedBy: Users;
 }

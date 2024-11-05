@@ -1,42 +1,45 @@
 import { Users } from '../users/users.entity';
-import { Hospitals } from '../hospitals/hospitals.entity';
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToMany, ManyToOne, OneToMany, JoinColumn } from 'typeorm';
-// import { Patient } from '../patient/patient.entity';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, JoinColumn } from 'typeorm';
 
 @Entity()
 export class PatientCarePlan {
     @PrimaryGeneratedColumn()
     careId: number;
 
-    @ManyToOne(() => Users, (users) => users.userId, { nullable: true })
+    @ManyToOne(() => Users, (user) => user.userId, { nullable: true })
     @JoinColumn({ name: 'doctorId' }) // Specify column name for clarity
-    doctorId: Users;
+    doctorId: Users; // Renamed to doctor for clarity
 
-    @ManyToOne(() => Users, (patients) => patients.userId, { nullable: true })
+    @ManyToOne(() => Users, (patient) => patient.userId, { nullable: true })
     @JoinColumn({ name: 'patientId' }) // Specify column name for clarity
     patient: Users;
 
-    @Column()
-    careplan: string;
+    @Column({ nullable: false }) // Made carePlan non-nullable for data integrity
+    carePlan: string; // Use camel case for consistency
 
-    @Column()
+    @Column({ nullable: false }) // Made cost non-nullable for data integrity
     cost: string;
 
-    @Column({ nullable: true, enum: ['active', 'inactive'], default: 'active' })
-    status: string;
+    @Column({ 
+        type: 'enum', 
+        enum: ['active', 'inactive'], 
+        default: 'active', 
+        nullable: true 
+    })
+    status: 'active' | 'inactive'; // Use union type for better type safety
 
-    @Column({nullable: true})
-    isApproved: string;
+    @Column({ nullable: true })
+    isApproved: string; // Consider changing to boolean if it's a yes/no field
 
-    @Column({nullable: true})
+    @Column({ nullable: true })
     comment: string;
 
-    @CreateDateColumn({ type: 'timestamptz' })
+    @CreateDateColumn({ type: 'datetime', nullable: false })
     createdAt: Date;
 
-    @UpdateDateColumn({ type: 'timestamptz' })
+    @UpdateDateColumn({ type: 'datetime', nullable: false })
     updatedAt: Date;
 
-    @DeleteDateColumn({ type: 'timestamptz', nullable: true })
+    @DeleteDateColumn({ type: 'datetime', nullable: true })
     deletedAt?: Date;
 }

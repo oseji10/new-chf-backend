@@ -1,49 +1,45 @@
 import { Users } from '../users/users.entity';
-import { Hospitals } from '../hospitals/hospitals.entity';
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToMany, ManyToOne, OneToMany, JoinColumn, Unique } from 'typeorm';
-// import { Patient } from '../patient/patient.entity';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, JoinColumn } from 'typeorm';
 
-@Entity()
-// @Unique(["patient"])
+@Entity('secretariat_assessments')  // Explicitly set the table name for MySQL
 export class SecretariatAssessment {
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn()  // Auto-increment primary key
     assesmentId: number;
 
     @ManyToOne(() => Users, (users) => users.userId, { nullable: true })
-    @JoinColumn({ name: 'secretariatId' }) // Specify column name for clarity
+    @JoinColumn({ name: 'secretariatId' })  // Specify column name for clarity
     secretariatId: Users;
 
-    @ManyToOne(() => Users, (patients) => patients.userId, )
-    @JoinColumn({ name: 'userId' }) // Specify column name for clarity
+    @ManyToOne(() => Users, (patients) => patients.userId, { nullable: true })
+    @JoinColumn({ name: 'userId' })  // Specify column name for clarity
     patient: Users;
 
-    
-
-    @Column({nullable: true})
+    @Column({ type: 'varchar', nullable: true })  // Specify type for recommendations
     recommendations: string;
 
-    @Column({nullable: true})
+    @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })  // Specify type for cost as a decimal
     cost: string;
 
-    @Column({ nullable: true, enum: ['active', 'inactive'], default: 'active' })
+    @Column({ type: 'enum', enum: ['active', 'inactive'], default: 'active', nullable: true })  // Use enum type for status
     status: string;
 
-    @Column({nullable: true})
+    @Column({ type: 'varchar', nullable: true })  // Specify type for isApproved
     isApproved: string;
 
-    @Column({nullable: true})
+    @Column({ type: 'text', nullable: true })  // Specify type for comments
     comment: string;
 
-    @CreateDateColumn({ type: 'timestamptz' })
-    createdAt: Date;
+   
+  @CreateDateColumn({ type: 'datetime', nullable: false })  // Remove default value
+  createdAt: Date;
 
-    @UpdateDateColumn({ type: 'timestamptz' })
-    updatedAt: Date;
+  @UpdateDateColumn({ type: 'datetime', nullable: false })  // Remove default value
+  updatedAt: Date;
 
-    @DeleteDateColumn({ type: 'timestamptz', nullable: true })
-    deletedAt?: Date;
+  @DeleteDateColumn({ type: 'datetime', nullable: true })
+  deletedAt?: Date;
 
     @ManyToOne(() => Users, (users) => users.userId, { nullable: true })
-  @JoinColumn()
-  updatedBy: Users;
+    @JoinColumn({ name: 'updatedBy' })  // Specify column name for clarity
+    updatedBy: Users;
 }

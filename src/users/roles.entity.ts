@@ -1,27 +1,31 @@
-// src/auth/roles.entity.ts
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  DeleteDateColumn,
+  OneToMany
+} from 'typeorm';
 import { Users } from './users.entity';
 
-@Entity()
+@Entity('roles')  // Explicitly set the table name for MySQL
 export class Roles {
   @PrimaryGeneratedColumn()
   roleId: number;
 
-  @Column({ unique: true })  // Ensure each role name is unique
+  @Column({ type: 'varchar', length: 255, unique: true })
   roleName: string;
 
-  @ManyToMany(() => Users, (users) => users.roles)
+  @OneToMany(() => Users, (user) => user.roles, { cascade: true })
   users: Users[];
 
-  // Timestamp fields
-  @CreateDateColumn({ type: 'timestamptz' })
+  @CreateDateColumn({ type: 'datetime', nullable: false })  // Remove default value
   createdAt: Date;
-  
-  @UpdateDateColumn({ type: 'timestamptz' })
-  updatedAt: Date;
-  
-  @DeleteDateColumn({ type: 'timestamptz', nullable: true })
-  deletedAt?: Date;
 
-  
+  @UpdateDateColumn({ type: 'datetime', nullable: false })  // Remove default value
+  updatedAt: Date;
+
+  @DeleteDateColumn({ type: 'datetime', nullable: true })
+  deletedAt?: Date;
 }

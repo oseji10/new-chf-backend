@@ -23,8 +23,13 @@ export class CmdAssessment {
     @Column({nullable: true})
     cost: string;
 
-    @Column({ nullable: true, enum: ['active', 'inactive'], default: 'active' })
-    status: string;
+    @Column({ 
+      type: 'enum', 
+      enum: ['active', 'inactive'], 
+      default: 'active' 
+  })
+  status: 'active' | 'inactive'; // Using union type for better type safety
+
 
     @Column({nullable: true})
     isApproved: string;
@@ -32,14 +37,15 @@ export class CmdAssessment {
     @Column({nullable: true})
     comment: string;
 
-    @CreateDateColumn({ type: 'timestamptz' })
-    createdAt: Date;
+   
+  @CreateDateColumn({ type: 'datetime', nullable: false })  // Remove default value
+  createdAt: Date;
 
-    @UpdateDateColumn({ type: 'timestamptz' })
-    updatedAt: Date;
+  @UpdateDateColumn({ type: 'datetime', nullable: false })  // Remove default value
+  updatedAt: Date;
 
-    @DeleteDateColumn({ type: 'timestamptz', nullable: true })
-    deletedAt?: Date;
+  @DeleteDateColumn({ type: 'datetime', nullable: true })
+  deletedAt?: Date;
 
     @ManyToOne(() => Users, (users) => users.userId, { nullable: true })
   @JoinColumn()

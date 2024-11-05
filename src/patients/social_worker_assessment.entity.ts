@@ -1,54 +1,50 @@
 import { Users } from '../users/users.entity';
 import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne } from 'typeorm';
-import { Patients } from './patients.entity';
 
-@Entity()
+@Entity('social_worker_assessments')  // Explicitly set the table name for MySQL
 export class SocialWorkerAssessment {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn()  // Auto-increment primary key
   id: number;
 
   @OneToOne(() => Users, (users) => users.userId, { nullable: true })
-  @JoinColumn()
+  @JoinColumn()  // Foreign key column for patient
   patient: Users;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })  // Specify type for appearance
   appearance: string;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })  // Specify type for bmi
   bmi: string;
 
-  @Column({ nullable: true })
+  @Column({ type: 'text', nullable: true })  // Specify type for commentOnHome to allow longer text
   commentOnHome: string;
 
-  @Column({ nullable: true })
+  @Column({ type: 'text', nullable: true })  // Specify type for commentOnEnvironment to allow longer text
   commentOnEnvironment: string;
 
-  @Column({ nullable: true })
+  @Column({ type: 'text', nullable: true })  // Specify type for commentOnFamily to allow longer text
   commentOnFamily: string;
 
-  @Column({ nullable: true })
+  @Column({ type: 'text', nullable: true })  // Specify type for generalComment to allow longer text
   generalComment: string;
 
-  
-  @Column({nullable: true})
+  @Column({ type: 'varchar', nullable: true })  // Specify type for isApproved
   isApproved: string;
 
-
-  @Column({nullable: true})
+  @Column({ type: 'text', nullable: true })  // Specify type for comment to allow longer text
   comment: string;
-  
+
   @ManyToOne(() => Users, (users) => users.userId, { nullable: true })
-  @JoinColumn()
+  @JoinColumn({ name: 'updatedBy' })  // Specify column name for clarity
   updatedBy: Users;
 
 
-     // Timestamp fields
-     @CreateDateColumn({ type: 'timestamptz' })
-     createdAt: Date;
-    
-     @UpdateDateColumn({ type: 'timestamptz' })
-     updatedAt: Date;
-    
-     @DeleteDateColumn({ type: 'timestamptz', nullable: true })
-     deletedAt?: Date;
+  @CreateDateColumn({ type: 'datetime', nullable: false })  // Remove default value
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: 'datetime', nullable: false })  // Remove default value
+  updatedAt: Date;
+
+  @DeleteDateColumn({ type: 'datetime', nullable: true })
+  deletedAt?: Date;
 }

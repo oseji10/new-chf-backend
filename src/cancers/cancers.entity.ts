@@ -1,24 +1,35 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
-// import { Patient } from '../patient/patient.entity';
-
-@Entity()
-export class Cancers {
+import {
+    Entity,
+    PrimaryGeneratedColumn,
+    Column,
+    CreateDateColumn,
+    UpdateDateColumn,
+    DeleteDateColumn
+  } from 'typeorm';
+  
+  @Entity()
+  export class Cancers {
     @PrimaryGeneratedColumn()
     cancerId: number;
-
+  
     @Column()
     cancerName: string;
-
-    @Column({nullable: true, enum: ['active', 'inactive'], default: 'active' })
-    status: string;
-
-    // Timestamp fields
-    @CreateDateColumn({ type: 'timestamptz' })
+  
+    @Column({
+      type: 'enum',
+      enum: ['active', 'inactive'],
+      nullable: true,
+      default: 'active'
+    })
+    status: 'active' | 'inactive';  // TypeScript type for better type checking
+  
+    @CreateDateColumn({ type: 'datetime', nullable: false })
     createdAt: Date;
-   
-    @UpdateDateColumn({ type: 'timestamptz' })
+  
+    @UpdateDateColumn({ type: 'datetime', nullable: false })
     updatedAt: Date;
-   
-    @DeleteDateColumn({ type: 'timestamptz', nullable: true })
+  
+    @DeleteDateColumn({ type: 'datetime', nullable: true })
     deletedAt?: Date;
-}
+  }
+  

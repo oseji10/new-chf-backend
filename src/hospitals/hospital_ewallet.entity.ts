@@ -7,29 +7,26 @@ export class HospitalEwallet {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToOne(() => Hospitals, (hospitals) => hospitals.hospitalId)
+  @OneToOne(() => Hospitals, (hospitals) => hospitals.hospitalId, { eager: true })
   @JoinColumn()
   hospital: Hospitals;
 
-  @Column({ unique: true,  type: 'decimal' })
+  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 }) // Added precision and default value
   credit: number;
 
-  @Column({ unique: true,  type: 'decimal' })
+  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 }) // Added precision and default value
   debit: number;
 
-
-  @ManyToOne(() => Users, (users) => users.userId, { nullable: true })
+  @ManyToOne(() => Users, (users) => users.userId, { nullable: true, eager: true }) // Added eager loading
   @JoinColumn()
   processedBy: Users;
 
+  @CreateDateColumn({ type: 'datetime', nullable: false })
+  createdAt: Date;
 
-     // Timestamp fields
-     @CreateDateColumn({ type: 'timestamptz' })
-     createdAt: Date;
-    
-     @UpdateDateColumn({ type: 'timestamptz' })
-     updatedAt: Date;
-    
-     @DeleteDateColumn({ type: 'timestamptz', nullable: true })
-     deletedAt?: Date;
+  @UpdateDateColumn({ type: 'datetime', nullable: false })
+  updatedAt: Date;
+
+  @DeleteDateColumn({ type: 'datetime', nullable: true })
+  deletedAt?: Date;
 }

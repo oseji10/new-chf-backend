@@ -1,45 +1,39 @@
 import { Users } from '../users/users.entity';
 import { Hospitals } from '../hospitals/hospitals.entity';
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToMany, ManyToOne, OneToMany, JoinColumn } from 'typeorm';
-import { Patients } from '../patients/patients.entity';
-
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToOne, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, JoinColumn } from 'typeorm';
 
 @Entity()
 export class Mdts {
     @PrimaryGeneratedColumn()
     mdtId: number;
 
-    @Column()
+    @Column({ nullable: false }) // Made this non-nullable
     mdtName: string;
 
-    @Column()
+    @Column({ nullable: false }) // Made this non-nullable
     title: string;
 
-    @Column()
+    @Column({ nullable: false }) // Made this non-nullable
     department: string;
 
-    @Column({nullable: true, enum: ['active', 'inactive'], default: 'active' })
-    status: string;
+    @Column({ nullable: true, type: 'enum', enum: ['active', 'inactive'], default: 'active' }) // Corrected the enum type
+    status: 'active' | 'inactive'; // Use union type for better type safety
 
-  
-
-    @ManyToOne(() => Hospitals, (hospital) => hospital.hospitalId)
+    @ManyToOne(() => Hospitals, (hospital) => hospital.hospitalId, { nullable: false }) // Made hospital non-nullable
     @JoinColumn()
-  hospital: Hospitals;
+    hospital: Hospitals;
 
-    @OneToOne(() => Users, (users) => users.userId, { nullable: true })
+    @OneToOne(() => Users, (user) => user.userId, { nullable: true }) // Optional user
     @JoinColumn()
-    user: Users;
+    user?: Users;
 
     // Timestamp fields
-    @CreateDateColumn({ type: 'timestamptz' })
+    @CreateDateColumn({ type: 'datetime', nullable: false })
     createdAt: Date;
-   
-    @UpdateDateColumn({ type: 'timestamptz' })
-    updatedAt: Date;
-   
-    @DeleteDateColumn({ type: 'timestamptz', nullable: true })
-    deletedAt?: Date;
 
-   
+    @UpdateDateColumn({ type: 'datetime', nullable: false })
+    updatedAt: Date;
+
+    @DeleteDateColumn({ type: 'datetime', nullable: true })
+    deletedAt?: Date;
 }
