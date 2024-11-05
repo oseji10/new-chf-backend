@@ -35,9 +35,14 @@ dotenv.config();
       type: 'postgres',
       host: process.env.DB_HOST,
       port: +process.env.DB_PORT,
-      username: process.env.DB_USERNAME || 'postgres',
-      password: process.env.DB_PASSWORD || '2wsxzaQ1!',
-      database: process.env.DB_DATABASE || 'chf',
+      // username: process.env.DB_USERNAME || 'postgres',
+      // password: process.env.DB_PASSWORD || '2wsxzaQ1!',
+      // database: process.env.DB_DATABASE || 'chf',
+
+      username: "jursfawz_oseji10",
+      password: "6ytrew21!2wsxzaQ1!",
+      database: "jursfawz_chf",
+
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       migrations: [join(__dirname, 'migrations/*.ts')],
       synchronize: true,
