@@ -13,7 +13,7 @@ async function bootstrap() {
   app.enableCors({
     // origin: 'http://localhost:3002', // Replace with your frontend domain
     // credentials: true,
-    origin: process.env.CLIENT_URL || 'http://localhost:3002',
+    origin: process.env.CLIENT_URL || 'http://localhost:3000',
   credentials: true, // Allow credentials (cookies) to be sent
   });
   app.use(cookieParser());

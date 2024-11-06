@@ -23,17 +23,31 @@ export class UsersService {
         return this.usersRepository.find();
       }
 
-  async create(userData: Partial<Users>): Promise<Users> {
-    const salt = await bcrypt.genSalt(10); // Salt rounds can be adjusted
-    const hashedPassword = await bcrypt.hash(userData.password, salt);
+      
 
-    const newUser = this.usersRepository.create({
-        ...userData,
-        password: hashedPassword,
-      });
-    return await this.usersRepository.save(newUser);
-  }
-
+      async create(userData: Partial<Users>): Promise<Users> {
+        const salt = await bcrypt.genSalt(10); // Salt rounds can be adjusted
+        const hashedPassword = await bcrypt.hash(userData.password, salt);
+      
+        // Query the Roles entity for the "PATIENT" role
+        const patientRole = await this.rolesRepository.findOne({
+          where: { roleName: 'PATIENT' }, // Assuming 'roleName' is 'PATIENT' for this example
+        });
+      
+        if (!patientRole) {
+          throw new Error('Role "PATIENT" not found');
+        }
+      
+        // Create the new user with the assigned role
+        const newUser = this.usersRepository.create({
+          ...userData,
+          password: hashedPassword,
+          roles: patientRole,  // Assign the "PATIENT" role to the user
+        });
+      
+        return await this.usersRepository.save(newUser);
+      }
+      
 
 // async create(email: string, password: string, phoneNumber: string): Promise<Users> {
 //     const saltRounds = 10;

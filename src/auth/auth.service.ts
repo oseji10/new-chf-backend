@@ -49,8 +49,8 @@ async login(email: string, password: string) {
     throw new UnauthorizedException('Invalid email or password');
   }
 
-  // Map roles to a simpler array of role names
-  const roles = user.roles.map((role) => role.roleName);
+  // Check if user has a role
+  const roles = user.roles ? [user.roles.roleName] : []; // Wrap the role name in an array
 
   const payload = { username: user.email, sub: user.userId, roles };
   return {
@@ -58,5 +58,6 @@ async login(email: string, password: string) {
     user: { id: user.userId, roles },
   };
 }
+
 
 }
