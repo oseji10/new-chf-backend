@@ -24,7 +24,7 @@ export class HospitalsService {
       async findDoctorsByHospital(hospitalId: number) {
         return this.doctorsRepository.find({
           where: { hospital: { hospitalId: hospitalId } },
-          relations: ['hospital'], // Optional: include hospital details if needed
+          relations: ['hospital', 'user'], // Optional: include hospital details if needed
         });
       }
       
