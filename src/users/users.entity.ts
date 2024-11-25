@@ -8,10 +8,12 @@ import {
   ManyToMany,
   JoinTable,
   OneToMany,
-  ManyToOne
+  ManyToOne,
+  OneToOne
 } from 'typeorm';
 import { Roles } from './roles.entity';
 import { Patients } from '../patients/patients.entity';
+import { Doctors } from 'src/doctors/doctors.entity';
 
 @Entity('users')  // Explicitly set the table name for MySQL
 export class Users {
@@ -43,6 +45,9 @@ export class Users {
 
   @OneToMany(() => Patients, (patient) => patient.user)  // One-to-many relationship with Patients
   patients: Patients[];
+
+  @OneToOne(() => Doctors, (doctor) => doctor.user)
+doctor: Doctors;
 
 
   @CreateDateColumn({ type: 'datetime', nullable: false })  // Remove default value

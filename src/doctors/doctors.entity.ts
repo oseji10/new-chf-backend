@@ -27,9 +27,10 @@ export class Doctors {
     @JoinColumn()
     hospital: Hospitals;
 
-    @OneToOne(() => Users, (user) => user.userId, { nullable: true })
-    @JoinColumn()
-    user?: Users; // Making user optional
+    @OneToOne(() => Users, (user) => user.doctor, { nullable: true })
+    @JoinColumn({ name: 'userId' }) // Ensure this matches your DB column name
+    user: Users;
+    
 
     @CreateDateColumn({ type: 'datetime', nullable: false })
     createdAt: Date;
